@@ -1,0 +1,14 @@
+[Unit]
+Description=Show /dev/fb0 on VFD module
+After=console-setup.service
+
+[Service]
+ExecStart=/usr/local/bin/showfb.sh
+#ExecStart=/usr/local/bin/showfb
+WorkingDirectory=/tmp
+#StandardOutput=null
+#StandardInput=null
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
