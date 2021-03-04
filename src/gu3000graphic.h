@@ -40,15 +40,11 @@ class GU3000Graphic : public FrameBuffer, private GU3000GPIO {
   void updateDisplayStartAddress();    // address = DisplayStartAddress
   void rotateAndSetDisplayStartAddress(); 
   void rotateButNotSetDisplayStartAddress();
-  void fillDisplay(byte writeData);
-  void clearDisplay();
-  //
-  // Operation to FrameBuffer
-  //
-  void clearFrameBuffer();
   //
   // FrameBuffer and VFD interaction
   //
+  void clear();
+  void clearFrameBuffer();
   void show();
   void rotateAndShow();
   void syncAndShow();
@@ -57,6 +53,7 @@ class GU3000Graphic : public FrameBuffer, private GU3000GPIO {
 private:
   //
   byte *m_buf = NULL;
+  bool m_first_show;
   word m_disp_memsize;
   word m_disp_areasize;
   word m_disp_startaddr;

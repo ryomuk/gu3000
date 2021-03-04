@@ -6,14 +6,14 @@ typedef unsigned char byte;
 // Data Structure of Fonts
 //
 typedef struct {
-  const byte *bitmap; // VLSB bitmap
-  const char *name;   // for {set/get}FontByName()
+  const byte *bitmap; // VLSB (Vertical direction LSB first bitmap)
+  const char *name;   // for FrameBuffer::{set/get}FontByName()
   int width;
   int height;
   int xspace;
   int yspace;
-  byte firstcode;
-  byte lastcode;
+  int firstcode;
+  int lastcode;
 } Font;
 
 extern Font *g_DefaultFont;

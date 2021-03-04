@@ -1,69 +1,83 @@
-# フレームバッファ/dev/fb0をVFDに表示するための設定
+Noritake Itron GU3000シリーズ VFDモジュール用ライブラリマニュアル
 
-(1) /dev/fb0 を作成 (HDMI出力は外す)
-/boot/config.txtに以下を追加
----ここから--
-framebuffer_height=128	
-framebuffer_width=256
-hdmi_cvt=256 128 60 3 0 0 0
-hdmi_group=2
-hdmi_mode=87
-hdmi_force_hotplug=1
----ここまで--
+この文書について
 
-(2)/dev/fb0 をVFDに逐次表示するコマンド
-examples/showfb
-examples/showfb.sh
-を/usr/local/binにコピー
+この文書は，Noritake Itron GU3000シリーズ VFDモジュール用に作成したプログラムについて説明するものです．
+ノリタケ伊勢電子株式会社(以下，Noritake Itron)とは一切関係のない個人が開発したものです．
 
-(3)上記コマンドをサービスとして起動
-/etc/systemd/system/showfb.service を作成、下記を記述。
----ここから--
-[Unit]
-Description=Show /dev/fb0 on VFD module
-After=console-setup.service
+開発に用いたハードウェア
+ - Noritake Itron GU256x128C-3100
+ - Raspbery Pi (4 および zero W)
+ - GU3000RasPiIF(レベル変換用インターフェース(自作))
 
-[Service]
-ExecStart=/usr/local/bin/showfb.sh
-#ExecStart=/usr/local/bin/showfb
-WorkingDirectory=/tmp
-#StandardOutput=null
-#StandardInput=null
-Restart=always
-
-[Install]
-WantedBy=multi-user.target
----ここまで--
-sudo systemctrl enable showfb.service
-で、サービスを有効化。
+開発環境
+ - Raspbery Pi Zero W
+  OS: Raspbian (Linux raspberrypi 5.4.79+ #1373)
+ - Raspberry Pi 4
+  OS: Raspbian (Linux raspberrypi 5.4.72-v7l+ #1356)
 
 
-#Xorg用設定
-/etc/X11/にxorg.confが無い
-/usr/shar/X11/xorg.conf.dがある
+グラフィックDMAモード用ライブラリ
 
-下記内容のxorg.confを/etc/X11/xorg.confに置く
 
----ここから--
-Section "Device"
-Identifier "testdevice"
-Driver  "fbdev"
-Option "fbdev" "/dev/fb0"
-EndSection
+VFDモジュールDIPスイッチの設定 ※重要
+コマンドモード選択(SW1 No.6): ON グラフィックDMAモードに設定します．
+(ソフトウェア仕様書 6.1.3 コマンドモード選択 参照)
 
-Section "Monitor"
-Identifier "testmonitor"
-EndSection
 
-Section "Screen"
-Identifier "screen"
-Device "testdevice"
-Monitor "testmonitor"
-EndSection
+VFDへの電源供給について
 
-Section "ServerLayout"
-Identifier "default"
-Screen 0 "screen" 0 0
-EndSection
----ここまで--
+事前にインストールが必要なもの
+wiringPi おそらくraspbianに標準でインストール済み
+インストールされていない場合はインストール
+% sudo apt install wiringpi
 
+Xwindow関連(必要であれば)
+% sudo apt install xorg-dev
+% sudo apt install xvfb
+% sudo apt install xfonts-utils
+% sudo apt install xfont-base
+
+% sudo apt install ncurses-dev
+
+
+
+
+
+お手軽なテスト
+(cdの引数は場所が明確になるようにgu3000から書いていますが，適当に読み替えて下さい)
+% cd gu3000/src
+% make
+% cd gu3000/src/examples
+% ./make.sh
+% cd gu3000/src/examples/test
+% ./test
+
+コンソール画面の表示
+
+
+Xwindowの表示
+
+
+
+
+おまけ
+ノーマルコマンドモード用ライブラリについて
+
+
+
+ノーマルコマンド使用方法
+
+コマンドモード選択(SW1 No.6): OFF ノーマルコマンドモードに設定します．
+(ソフトウェア仕様書 6.1.3 コマンドモード選択 参照)
+
+
+参考文献
+Noritake Itronの下記サイトから現行品(GU3900B)の技術資料が入手可能です．
+本プログラムで動作確認しているモジュールは旧製品のGU3100ですが，基本的な部分は同じようでした．
+
+https://www.noritake-itron.jp/products/module/gu-3000
+「ディスプレイモジュールハードウェア仕様書」DS-1604-000-04, 2015年6月1日改訂
+「ディスプレイモジュール3900Bシリーズ"基本機能"ソフトウェア仕様書」DS-1600-0007-00, 2010年11月29日制定
+「蛍光表示管モジュール「GU-3000 シリーズ モジュール」アプリケーションノート」
+APF300 R1.72

@@ -25,7 +25,7 @@ int main(int argc, char *argv[]){
   for(int i = 0; vfd.fontList[i] != NULL; i++){
     Font *font = vfd.fontList[i];
     for(int p = 0; p < 3; p++){
-      vfd.clearFrameBuffer();
+      vfd.clear();
       vfd.setDefaultFont();
       if(p == 1){
 	sprintf(linebuf, "Name:%s(proportional)\nSize:%d(max)x%ddots(%d(min)x%d lines)\n",

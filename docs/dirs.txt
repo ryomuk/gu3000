@@ -1,0 +1,151 @@
+gu3000
+|-- LICENSE
+|-- README.md
+|-- docs
+|   |-- README_JP.txt
+|   `-- addto_boot_config.txt
+|-- hardware
+|   `-- schematics.pdf
+`-- src
+    |-- Makefile
+    |-- examples
+    |   |-- benchmark
+    |   |   |-- 256128sample.bmp
+    |   |   |-- Makefile
+    |   |   |-- benchmark.cpp
+    |   |   |-- writeAreaBitImage.dat
+    |   |   `-- writeBitImage.dat
+    |   |-- clean.sh
+    |   |-- clear
+    |   |   |-- Makefile
+    |   |   `-- clear.cpp
+    |   |-- font2txt
+    |   |   |-- 16segments.psf
+    |   |   |-- 16segments.txt
+    |   |   |-- 4x6.psf
+    |   |   |-- 4x6.txt
+    |   |   |-- H68TR.psf
+    |   |   |-- H68TR.txt
+    |   |   |-- MICRlike6x6.psf
+    |   |   |-- MICRlike6x6.txt
+    |   |   |-- MICRlike7x8.psf
+    |   |   |-- MICRlike7x8.txt
+    |   |   |-- Makefile
+    |   |   |-- Noritake6x8.psf
+    |   |   |-- Noritake6x8.txt
+    |   |   |-- font2txt.cpp
+    |   |   |-- hoge.txt
+    |   |   |-- makepsf.sh
+    |   |   `-- rw-psf -> ../../../../rw-psf
+    |   |-- fonttest
+    |   |   |-- Makefile
+    |   |   `-- fonttest.cpp
+    |   |-- lifegame
+    |   |   |-- Makefile
+    |   |   |-- lifegame.cpp
+    |   |   `-- lifegame.h
+    |   |-- make.sh
+    |   |-- playbmp
+    |   |   |-- Makefile
+    |   |   |-- Touhou_BadApplePV.bmp -> ../../../movie/Touhou_BadApplePV.bmp
+    |   |   |-- Touhou_BadApplePV.mp4 -> ../../../movie/Touhou_BadApplePV.mp4
+    |   |   |-- makebmp.sh
+    |   |   |-- play.sh
+    |   |   |-- playbmp.cpp
+    |   |   `-- poi.sh
+    |   |-- showbmp
+    |   |   |-- 128x32d_7.bmp
+    |   |   |-- 256128sample.bmp
+    |   |   |-- 512x32_1.bmp
+    |   |   |-- Makefile
+    |   |   |-- hoge.xwd
+    |   |   |-- poi.xwd
+    |   |   |-- showbmp.cpp
+    |   |   `-- test.bmp
+    |   |-- showfb
+    |   |   |-- Makefile
+    |   |   |-- showfb.cpp
+    |   |   |-- showfb.service
+    |   |   `-- showfb.sh
+    |   |-- showwire
+    |   |   |-- Makefile
+    |   |   |-- diamond.obj
+    |   |   |-- showwire.cpp
+    |   |   `-- teapot.obj
+    |   |-- showxvfb
+    |   |   |-- Makefile
+    |   |   |-- gnuplot-5.2.6 -> ../../../../gnuplot-5.2.6
+    |   |   |-- showxvfb.cpp
+    |   |   |-- showxvfb_byfile
+    |   |   |   |-- Makefile
+    |   |   |   |-- X11
+    |   |   |   |   |-- XWDFile.h
+    |   |   |   |   `-- Xmd.h
+    |   |   |   |-- poi.xwd
+    |   |   |   |-- showxwd
+    |   |   |   |-- showxwd.cpp
+    |   |   |   |-- showxwd.o
+    |   |   |   `-- xvfb.sh
+    |   |   `-- xvfb.sh
+    |   |-- test
+    |   |   |-- Makefile
+    |   |   `-- test.cpp
+    |   |-- typewriter
+    |   |   |-- Makefile
+    |   |   `-- typewriter.cpp
+    |   `-- viewtxt
+    |       |-- Makefile
+    |       |-- helloworld.c
+    |       |-- sample.txt
+    |       |-- tabtest.txt
+    |       `-- viewtxt.cpp
+    |-- examples.normalmode
+    |   |-- clean.sh
+    |   |-- clear
+    |   |   |-- Makefile
+    |   |   `-- clear.cpp
+    |   |-- lifegame
+    |   |   |-- Makefile
+    |   |   |-- lifegame.cpp
+    |   |   `-- lifegame.h
+    |   |-- make.sh
+    |   |-- power
+    |   |   |-- Makefile
+    |   |   `-- power.cpp
+    |   |-- showbmp
+    |   |   |-- 128x32d_7.bmp
+    |   |   |-- 256128sample.bmp
+    |   |   |-- 512x32_1.bmp
+    |   |   |-- Makefile
+    |   |   `-- showbmp.cpp
+    |   |-- test
+    |   |   |-- Makefile
+    |   |   `-- test.cpp
+    |   `-- testcommand
+    |       |-- Makefile
+    |       `-- testcommand.cpp
+    |-- font.cpp
+    |-- font.h
+    |-- fonts
+    |   |-- 16segments_font.h
+    |   |-- 4x6_font.h
+    |   |-- H68TR_font.h
+    |   |-- MICRlike6x6_font.h
+    |   |-- MICRlike7x8_font.h
+    |   |-- Noritake6x8_font.h
+    |   |-- TK80BS_ASCII_font.h
+    |   |-- TK80BS_GREEK_font.h
+    |   |-- TK80BS_JIS_font.h
+    |   |-- TK80BS_KANA_font.h
+    |   `-- TK80BS_font.h
+    |-- framebuffer.cpp
+    |-- framebuffer.h
+    |-- gu3000common.h
+    |-- gu3000gpio.cpp
+    |-- gu3000gpio.h
+    |-- gu3000graphic.cpp
+    |-- gu3000graphic.h
+    |-- gu3000normal.cpp
+    `-- gu3000normal.h
+
+29 directories, 119 files

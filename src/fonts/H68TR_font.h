@@ -1,3 +1,5 @@
+// Hitachi H68/TR 7 segments LED console font
+
 const unsigned char bmp_H68TR[] =
   {
    //  

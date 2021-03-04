@@ -81,9 +81,9 @@ int main(int argc, char *argv[]){
   vfd.show();
   
   time_s = micros();
-  vfd.clearDisplay();
+  vfd.clear();
   time_lastcommand = micros() - time_s;
-  printf("clearDisplay:%d usec\n", (int)time_lastcommand);
+  printf("clear:%d usec\n", (int)time_lastcommand);
 
 #if 0
   for(int i = 1; i <= vfd.bufsize; i++){

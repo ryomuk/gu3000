@@ -131,6 +131,8 @@ int main(int argc, char *argv[]){
     }
   }
 
+  vfd.clear();
+  
   double max_position = 0.0;
   unsigned long time_s, time_last;
   time_last = 0;

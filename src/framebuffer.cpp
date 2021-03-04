@@ -62,7 +62,6 @@ int FrameBuffer::getPixelMSBfirst(int x, int y){
   return(buf[memoffset] & bitpattern);
 }
 
-
 void FrameBuffer::drawPixel(int x, int y, int pen){
   if(x < 0 || x >= WIDTH || y < 0 || y >= HEIGHT) return;
   if(pen){
@@ -126,11 +125,113 @@ void FrameBuffer::writeLine(int x0, int y0, int x1, int y1, int pen){
 }
 
 void FrameBuffer::writeFastVline(int x, int y, int vlength, int pen){
-  writeLine(x, y, x, y + vlength, pen); // temporary implementation
+  //  writeLine(x, y, x, y + vlength, pen); // temporary implementation
+  //  return;
+
+  int i_start, i_end, i;
+  static const byte bitmap1[8] = {0b11111111,
+				  0b11111110,
+				  0b11111100,
+				  0b11111000,
+				  0b11110000,
+				  0b11100000,
+				  0b11000000,
+				  0b10000000};
+  static const byte bitmap2[8] = {0b00000001,
+				  0b00000011,
+				  0b00000111,
+				  0b00001111,
+				  0b00011111,
+				  0b00111111,
+				  0b01111111,
+				  0b11111111};
+
+  if(x < 0 || x >= WIDTH) return;
+  if( y < 0){
+    vlength = vlength - (-y);
+    y = 0;
+  };
+  if(y + vlength >= HEIGHT){
+    vlength = HEIGHT - y - 1;
+  }
+  
+  i_start = x*m_ybytes + (y / 8);
+  i_end   = x*m_ybytes + ((y+vlength) / 8);
+
+  if(pen){
+    if(i_start == i_end){
+      buf[i_start] |= (bitmap1[y&7] & bitmap2[(y+vlength)&7]);
+    } else {
+      buf[i_start] |= bitmap1[y&7];
+      for(i = i_start+1; i < i_end; i++){
+	buf[i] = 0xff;
+      }
+      buf[i_end] |= bitmap2[(y+vlength)&7];
+    }
+  } else {
+    if(i_start == i_end){
+      buf[i_start] &= ~(bitmap1[y&7] & bitmap2[(y+vlength)&7]);
+    } else {
+      buf[i_start] &= ~bitmap1[y&7];
+      for(i = i_start+1; i < i_end; i++){
+	buf[i] = 0x00;
+      }
+      buf[i_end] &= ~bitmap2[(y+vlength)&7];
+    }
+  }
 }
 
 void FrameBuffer::writeFastHline(int x, int y, int hlength, int pen){
-  writeLine(x, y, x + hlength, y, pen); // temporary implementation
+  //writeLine(x, y, x + hlength, y, pen); // temporary implementation
+  //return;
+  int i_start, i_end, i;
+
+  byte bitpattern;
+
+  if(y < 0 || y >= HEIGHT) return;
+  if( x < 0){
+    hlength = hlength - (-x);
+    x = 0;
+  };
+  if(x + hlength >= WIDTH){
+    hlength = WIDTH - x - 1;
+  }
+
+  i_start = x*m_ybytes + (y / 8);
+  i_end   = (x+hlength)*m_ybytes + (y/ 8);
+    
+  if(pen){
+    bitpattern = bit(y&7);
+    for(i = i_start; i <= i_end; i+=m_ybytes){
+      buf[i] |= bitpattern;
+    }
+  } else {
+    bitpattern = ~bit(y&7);
+    for(i = i_start; i <= i_end; i+=m_ybytes){
+      buf[i] &= bitpattern;
+    }
+  }
+}
+
+
+void FrameBuffer::drawBox(int x0, int y0, int x1, int y1, int pen){
+  writeLine(x0, y0, x0, y1, pen);
+  writeLine(x0, y1, x1, y1, pen);
+  writeLine(x1, y1, x1, y0, pen);
+  writeLine(x1, y0, x0, y0, pen);
+}
+
+void FrameBuffer::drawBoxFill(int x0, int y0, int x1, int y1, int pen){
+  int x;
+  if(x0 < x1){
+    for(x = x0; x <=x1; x++){
+      writeLine(x, y0, x, y1, pen);
+    }
+  } else {
+    for(x = x1; x <=x0; x++){
+      writeLine(x, y0, x, y1, pen);
+    }
+  }
 }
 
 void FrameBuffer::drawLine(int x0, int y0, int x1, int y1, int pen){
@@ -150,7 +251,6 @@ void FrameBuffer::drawLine(int x0, int y0, int x1, int y1, int pen){
     writeLine(x0, y0, x1, y1, pen);
   }
 }
-
 
 
 void FrameBuffer::fill(byte c){
@@ -358,7 +458,7 @@ void FrameBuffer::scrollByte(){
   }
 }
 
-void FrameBuffer::write(unsigned char c){
+void FrameBuffer::putchar(int c){
   if(c >= m_font_firstcode && c <= m_font_lastcode){
     // drawable character
     if(m_font_proportional){
@@ -404,13 +504,9 @@ void FrameBuffer::setTabstop(int n){
   }
 }
 
-void FrameBuffer::putchar(int c){
-  write(c);
-}
-
 void FrameBuffer::puts(const char *s){
   while(*s != 0){
-    write(*s++);
+    putchar(*s++);
   }
 }
 

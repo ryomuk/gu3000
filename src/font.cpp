@@ -1,4 +1,7 @@
-#include <stdio.h>  // for NULL ptr
+// Font bitmap data for FrameBuffer class
+//
+
+#include <stdio.h>  // for the NULL pointer
 #include "font.h"
 
 #include "fonts/16segments_font.h"

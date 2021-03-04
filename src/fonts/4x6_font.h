@@ -1,3 +1,5 @@
+// Very small 4x6 font
+
 const unsigned char bmp_4x6[] =
   {
    //  

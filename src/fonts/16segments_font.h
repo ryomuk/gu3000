@@ -1,4 +1,4 @@
-// 16 segments
+// 16 segments LED font
 
 const unsigned char bmp_16segments[] =
   {

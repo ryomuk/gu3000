@@ -1,5 +1,8 @@
 #ifndef FRAMEBUFFER_H
 #define FRAMEBUFFER_H
+//
+//  Header file for FrameBuffer class
+//
 
 typedef unsigned char byte;
 typedef unsigned short word;
@@ -10,6 +13,7 @@ typedef unsigned short word;
 #define min(x, y) ((x) <= (y) ? (x): (y))
 #define max(x, y) ((x) >= (y) ? (x): (y))
 
+// Spacing of tab stops for write('\t')
 #define FRAMEBUFFER_DEFAULT_TABSTOP 8
 
 class FrameBuffer{
@@ -45,12 +49,13 @@ public:
   int getPixelMSBfirst(int x, int y);
   void drawPixel(int x, int y, int pen);
   void drawLine(int x0, int y0, int x1, int y1, int pen);
+  void drawBox(int x0, int y0, int x1, int y1, int pen);
+  void drawBoxFill(int x0, int y0, int x1, int y1, int pen);
   void drawBitmap(int x, int y, const byte *bitmap, int width, int height);
   //
   // methods for drawing character
   //
   void drawChar(int x, int y, byte c);
-  void write(byte c);
   void setCursor(int x, int y);
   void scrollByte();
   void putchar(int c);
