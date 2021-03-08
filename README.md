@@ -36,7 +36,8 @@ make
 ```
 
 ### showwire
-[![showwire](images/teapot.jpg)](https://www.youtube.com/watch?v=gbkjLUjZCEo "showwire")
+click to play movie
+[embed](https://www.youtube.com/watch?v=gbkjLUjZCEo "showwire teapot.obj")
 ```
 cd gu3000/src/examples/showwire
 make
