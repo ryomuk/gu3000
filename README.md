@@ -5,8 +5,8 @@ See documents in docs for further information.
 (Most of them are in Japanese, but Google or DeepL will translate them.)
 
 ## Hardware configuration
-Raspberry Pi 4/ Zero/ Zero W
 ```
+Raspberry Pi 4/ Zero/ Zero W
 GPIO
 18  19  20...27
 ^  
