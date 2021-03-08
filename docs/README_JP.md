@@ -14,7 +14,7 @@
 - Raspbery Pi Zero W
   - OS: Raspbian (Linux raspberrypi 5.4.79+ #1373)
 - Raspberry Pi 4
-  -OS: Raspbian (Linux raspberrypi 5.4.72-v7l+ #1356)
+  - OS: Raspbian (Linux raspberrypi 5.4.72-v7l+ #1356)
 
 
 ### グラフィックDMAモード用ライブラリ
