@@ -6,7 +6,7 @@ See documents in docs for further information.
 
 ## Hardware configuration
 Raspberry Pi 4/ Zero/ Zero W
-
+```
 GPIO
 18  19  20...27
 ^  
@@ -16,10 +16,11 @@ GPIO
     v   v    v
 RDY WR_ D0...D7
 VFD module
+```
 
 ## How to build
 ```
-git clone
+git clone https://github.com/ryomuk/gu3000.git
 cd gu3000/src
 make
 cd examples
