@@ -1,6 +1,12 @@
 #ifndef GU3000GPIO_H
 #define GU3000GPIO_H
 
+// gu3000gpio.h
+//
+// Header file for GU3000GPIO class
+// commonly used in both graphic DMA mode (gu3000graphic.cpp)
+// and normal command mode (gu3000normal.cpp)
+
 #include "gu3000common.h"
 //
 // GPIO configuration (wiringPi numbering)

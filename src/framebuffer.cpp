@@ -1,10 +1,13 @@
 //
-// Frame Buffer
+// framebuffer.cpp
 //
 // Upper Left is (0,0)
 // Buffer address increments Vertical direction(Upper to Lower)
 // Pixel mapping is LSB first (most upper is LSB, most lower is MSB)
 // 1bit/1pixel
+//
+// The GU3000 series VFD module's pixel mapping is MSB first.
+// GU3000gpio::writeByteImage() converts LSB to MSB.
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -264,8 +267,8 @@ void FrameBuffer::clear(){
   setCursor(0, 0);
 }
 
-void FrameBuffer::setFont(Font *font){
-  currentFont = font;
+void FrameBuffer::setFont(Font *f){
+  font = f;
 
   m_font_bitmap = (byte *)(font->bitmap);
   m_font_width = font->width;
@@ -287,7 +290,7 @@ void FrameBuffer::setFont(Font *font){
   }
 }
 
-void FrameBuffer::setDefaultFont(){
+void FrameBuffer::setFontDefault(){
   setFont(g_DefaultFont);
   setFontFixedWidth();
 }
@@ -311,6 +314,19 @@ void FrameBuffer::setFontByName(const char *name){
   } else {
     setFont(f);
   }
+}
+
+static byte swapbit8(byte x){
+  byte y;
+  y =  (x & 1);  y <<= 1;  x >>= 1;
+  y |= (x & 1);  y <<= 1;  x >>= 1;
+  y |= (x & 1);  y <<= 1;  x >>= 1;
+  y |= (x & 1);  y <<= 1;  x >>= 1;
+  y |= (x & 1);  y <<= 1;  x >>= 1;
+  y |= (x & 1);  y <<= 1;  x >>= 1;
+  y |= (x & 1);  y <<= 1;  x >>= 1;
+  y |= (x & 1);
+  return(y);
 }
 
 void FrameBuffer::invertFontBitmapOrder(){
@@ -374,8 +390,8 @@ int FrameBuffer::bitmapContentWidth(const byte *bitmap, int width, int height){
 
 void FrameBuffer::setFontFixedWidth(){
   m_font_proportional = false;
-  m_font_width = currentFont->width;
-  m_font_xspace = currentFont->xspace;
+  m_font_width = font->width;
+  m_font_xspace = font->xspace;
 }
 
 void FrameBuffer::setFontProportional(){
@@ -492,7 +508,7 @@ void FrameBuffer::putchar(int c){
     cursor_x = 0;
   } else if(c == '\t'){
     // TAB
-    int charwidth = currentFont->width + currentFont->xspace;
+    int charwidth = font->width + font->xspace;
     cursor_x += (m_tabstop - ((cursor_x/charwidth) % m_tabstop)) * charwidth;
     cursor_x = ((int)(cursor_x / charwidth)) * charwidth;
   }
@@ -508,19 +524,6 @@ void FrameBuffer::puts(const char *s){
   while(*s != 0){
     putchar(*s++);
   }
-}
-
-byte FrameBuffer::swapbit8(byte x){
-  byte y;
-  y =  (x & 1);  y <<= 1;  x >>= 1;
-  y |= (x & 1);  y <<= 1;  x >>= 1;
-  y |= (x & 1);  y <<= 1;  x >>= 1;
-  y |= (x & 1);  y <<= 1;  x >>= 1;
-  y |= (x & 1);  y <<= 1;  x >>= 1;
-  y |= (x & 1);  y <<= 1;  x >>= 1;
-  y |= (x & 1);  y <<= 1;  x >>= 1;
-  y |= (x & 1);
-  return(y);
 }
 
 // load HLSB bitmap to VLSB frame buffer

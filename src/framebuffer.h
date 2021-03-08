@@ -28,7 +28,7 @@ public:
   int bufsize;
   int cursor_x;
   int cursor_y;
-  Font *currentFont;
+  Font *font;
   Font **fontList;
   //
   // basic mehods
@@ -53,7 +53,7 @@ public:
   void drawBoxFill(int x0, int y0, int x1, int y1, int pen);
   void drawBitmap(int x, int y, const byte *bitmap, int width, int height);
   //
-  // methods for drawing character
+  // methods for drawing characters
   //
   void drawChar(int x, int y, byte c);
   void setCursor(int x, int y);
@@ -67,26 +67,24 @@ public:
   void setFont(Font *font);
   void setFontByName(const char *fontname);
   Font *getFontByName(const char *fontname);
-  void setDefaultFont(); // set font to default font
+  void setFontDefault(); // set font to default font
   void setFontProportional();
   void setFontFixedWidth();
-  void invertFontBitmapOrder();
+  void invertFontBitmapOrder(); // for use with setBitmapOrder(VFD_MSBFIRST)
   //
-  // methods for mapping different format 
+  // methods for mapping different format bitmaps
   //
   void loadBitmapHLSB(byte *bmp, int width, int height);
   void loadBitmapBMP(byte *bmp, int width, int height);
   void loadBitmapBytePerPixel(byte *bmp, int width, int height);
 private:
-  int m_ybytes;
+  int m_ybytes; // = HEIGHT / 8
   //
   // for grahpics
   //
   void writeFastVline(int x, int y, int vlength, int pen);
   void writeFastHline(int x, int y, int hlength, int pen);
   void writeLine(int x0, int y0, int x1, int y1, int pen);
-  //
-  byte swapbit8(byte x);
   //
   // for font and characters
   //

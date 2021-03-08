@@ -1,6 +1,12 @@
 #ifndef GU3000COMMON_H
 #define GU3000COMMON_H
 
+// gu3000common.h
+//
+// Header file commonly used for graphic DMA mode (gu3000graphic.cpp)
+// and for normal command mode (gu3000normal.cpp)
+
+
 #include<stdio.h>
 #include<stdlib.h>
 #include<wiringPi.h>

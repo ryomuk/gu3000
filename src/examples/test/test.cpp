@@ -110,7 +110,7 @@ int main(void){
 
 #define show_and_pause(x) measure(vfd.show()); pause();
 
-  printf("LOOPS=%d\n", LOOPS);
+  printf("LOOPS(in test_xxx())=%d\n", LOOPS);
   
   measure(vfd.clear());
   show_and_pause();
@@ -122,7 +122,7 @@ int main(void){
   measure(test_box(vfd, 1));
   show_and_pause();
 
-  measure(test_boxfill(vfd, 1));
+    measure(test_boxfill(vfd, 1));
   show_and_pause();
 
   vfd.clear();

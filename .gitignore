@@ -34,3 +34,6 @@
 # Emacs backup files
 *~
 
+# examples not for release
+000_git.ignore
+

@@ -1,6 +1,11 @@
 #ifndef GU3000_NORMAL_H
 #define GU3000_NORMAL_H
 
+// gu3000normal.h
+//
+// Header file for normal command mode (gu3000.normal)
+// 
+
 #include "gu3000gpio.h"
 #include "framebuffer.h"
 

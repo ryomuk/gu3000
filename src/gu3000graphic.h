@@ -1,9 +1,11 @@
+#ifndef GU3000GRAPHIC_H
+#define GU3000GRAPHIC_H
+
+// gu3000graphic.h
+//
 // Header file for Noritake GU-3000 Series VFD
 // using Parallel Interface Graphic DMA mode
 // use 'GU3000normal.h' if you use normal command mode
-
-#ifndef GU3000GRAPHIC_H
-#define GU3000GRAPHIC_H
 
 #include "gu3000gpio.h"
 #include "framebuffer.h"

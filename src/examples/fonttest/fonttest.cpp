@@ -24,9 +24,9 @@ int main(int argc, char *argv[]){
   
   for(int i = 0; vfd.fontList[i] != NULL; i++){
     Font *font = vfd.fontList[i];
-    for(int p = 0; p < 3; p++){
+    for(int p = 0; p < 2; p++){
       vfd.clear();
-      vfd.setDefaultFont();
+      vfd.setFontDefault();
       if(p == 1){
 	sprintf(linebuf, "Name:%s(proportional)\nSize:%d(max)x%ddots(%d(min)x%d lines)\n",
 		font->name,
@@ -70,7 +70,8 @@ int main(int argc, char *argv[]){
 	vfd.putchar(c);
       }
       vfd.show();
-      getchar();
+      //getchar();
+      delay(1000);
     }
   }
   exit(EXIT_SUCCESS);

@@ -5,9 +5,6 @@
 #include <stdlib.h>
 #include "gu3000graphic.h"
 
-//
-// Graphic DMA Mode Commands
-//
 void GU3000Graphic::init(int x, int y, int memsize){
   xsize = x;
   ysize = y;
@@ -40,6 +37,9 @@ void GU3000Graphic::setBitmapOrder(int order)
   GU3000GPIO::setBitmapOrder(order);
 }
 
+//
+// Graphic DMA Mode Commands
+//
 void GU3000Graphic::writeCommand(byte commandCode){
   writeByte(0x02); // command header 1(STX)
   writeByte(0x44); // command header 2
@@ -72,16 +72,6 @@ void GU3000Graphic::writeAreaBitImage(word startAddress,
   }
 }
 
-void GU3000Graphic::setDisplayStartAddress(word startAddress){
-  writeCommand(0x53);
-  writeWord(startAddress);
-  m_disp_startaddr = startAddress;
-}
-
-void GU3000Graphic::updateDisplayStartAddress(){
-  setDisplayStartAddress(m_disp_startaddr);
-}
-
 void GU3000Graphic::syncNextCommand(){
   writeCommand(0x57);
   writeByte(0x01);
@@ -90,6 +80,17 @@ void GU3000Graphic::syncNextCommand(){
 void GU3000Graphic::setBrightness(byte brightness){
   writeCommand(0x58);
   writeByte(brightness);
+}
+
+
+void GU3000Graphic::setDisplayStartAddress(word startAddress){
+  writeCommand(0x53);
+  writeWord(startAddress);
+  m_disp_startaddr = startAddress;
+}
+
+void GU3000Graphic::updateDisplayStartAddress(){
+  setDisplayStartAddress(m_disp_startaddr);
 }
 
 void GU3000Graphic::clearFrameBuffer(){
@@ -117,6 +118,9 @@ void GU3000Graphic::rotateAndSetDisplayStartAddress(){
   updateDisplayStartAddress();
 }
 
+// Sending whole buffer takes time (ex. s256x128 buffer takes 12ms),
+// so compare the current buffer and the last buffer before sending
+// to VFD module.
 void GU3000Graphic::show(){
   int i;
   int diff_start, diff_size;
