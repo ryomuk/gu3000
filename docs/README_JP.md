@@ -1,4 +1,6 @@
-##Noritake Itron GU3000シリーズ VFDモジュール用ライブラリマニュアル
+作成途中のドラフトです.(2021/3/8)
+
+## Noritake Itron GU3000シリーズ VFDモジュール用ライブラリマニュアル
 
 ### この文書について
 
@@ -53,20 +55,40 @@ graphicDMAモードにおいてもVFDへの転送はそれなりに時間がか�
 +--------------------------------
 ```
 
-VFDモジュールDIPスイッチの設定 ※重要
+### VFDモジュールDIPスイッチの設定 *重要*
 コマンドモード選択(SW1 No.6): ON グラフィックDMAモードに設定します．
 (ソフトウェア仕様書 6.1.3 コマンドモード選択 参照)
 
-
 ### VFDへの電源供給について
+電源:
+DC 5V (プラグ内径2.1mm/外径5.5mm, センタープラス)
+VFDの最大消費電流(全画素点灯時)は1.1Aです。
 
-事前にインストールが必要なもの
+
+基板上のピンヘッダにより、
+GPIOの5VとVFD(インターフェースボードからの給電)の5Vを
+接続することができます。
+これにより、Raspberry PiにGPIO経由で給電することもできます。
+その場合には、それにあわせて十分な容量の電源をご用意下さい。
+
+逆に、GPIOからの給電でVFDを動作させることも出来ますが、
+その場合もRaspberry Pi側の電源の容量を十分に確保して下さい。
+
+Raspberry Pi側給電と、VFD(インターフェースボード)側の給電で
+2つのACアダプタを使用する場合には、
+GPIO_VCCとVFD_VCCを切り離して下さい。
+接続した状態で2つのACアダプタを使用すると、電源が並列に接続されるため、
+電位差による逆流によってACアダプタに悪影響を及ぼすおそれがあります。
+
+
+
+### 事前にインストールが必要なもの
+```
 wiringPi おそらくraspbianに標準でインストール済み
 インストールされていない場合はインストール
 % sudo apt install wiringpi
 
 Xwindow関連(必要であれば)
-```
 sudo apt install xorg-dev
 sudo apt install xvfb
 sudo apt install xfonts-utils
@@ -76,16 +98,13 @@ sudo apt install ncurses-dev
 ```
 
 
-
-
 ### お手軽なテスト
-(cdの引数は場所が明確になるようにgu3000から書いていますが，適当に読み替えて下さい)
 ```
 cd gu3000/src
 make
-cd gu3000/src/examples
+cd examples
 ./make.sh
-cd gu3000/src/examples/test
+cd test
 ./test
 ```
 
