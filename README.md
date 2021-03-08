@@ -37,6 +37,7 @@ make
 
 ### showwire
 ![](images/teapot.jpg)
+[![showwire](images/teapot.jpg)](https://www.youtube.com/watch?v=gbkjLUjZCEo "showwire")
 ```
 cd gu3000/src/examples/showwire
 make
