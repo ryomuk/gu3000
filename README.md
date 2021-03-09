@@ -29,11 +29,23 @@ cd examples
 
 ## Examples
 ### test
+![](images/test.jpg)
 ```
 cd gu3000/src/examples/test
 make
 ./test
 ```
+Test and benchmark of basic drawing methods.
+
+### fonttest
+![](images/fonttest_MICR.jpg)
+![](images/fonttest_H68TR.jpg)
+```
+cd gu3000/src/examples/fonttest
+make
+./fonttest
+```
+Show installed fonts.
 
 ### showwire
 click image to play movie
@@ -43,4 +55,34 @@ cd gu3000/src/examples/showwire
 make
 ./showwire teapot.obj
 ```
+
+### lifegame
+![](images/lifegame.jpg)
+```
+cd gu3000/src/examples/lifegame
+make
+./lifegame
+```
+Conway's Game of Life.
+
+### showbmp
+![](images/lifegame.jpg)
+```
+cd gu3000/src/examples/showbmp
+make
+./showbmp 256128sample.bmp
+```
+Show bmp file.
+
+### viewtxt
+![](images/viewtxt.jpg)
+```
+cd gu3000/src/examples/viewtxt
+make
+./viewtxt sample.txt
+```
+View text file. Several fonts are available.
+
+
+
 

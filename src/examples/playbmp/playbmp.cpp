@@ -46,7 +46,9 @@ int main(int argc, char *argv[]){
   
   while(1){
     time_s = micros();
-    fread(vfd.buf, sizeof(byte), vfd.bufsize, fp);
+    if(fread(vfd.buf, sizeof(byte), vfd.bufsize, fp) == 0){
+      exit(0);
+    }
 #ifdef LSBFIRST
     for(int i = 0; i < vfd.bufsize; i++){
       vfd.buf[i] = swapbit8(vfd.buf[i]);
