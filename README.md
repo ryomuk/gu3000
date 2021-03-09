@@ -42,8 +42,8 @@ Show installed fonts.
 ```
 cd gu3000/src/examples/fonttest
 make
-```
 ./fonttest
+```
 ![](images/fonttest_MICR.jpg)
 ![](images/fonttest_H68TR.jpg)
 
