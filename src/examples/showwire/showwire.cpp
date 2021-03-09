@@ -4,6 +4,9 @@
 #include <math.h>
 #include <gu3000graphic.h>
 
+// Wire frame models are available
+// from https://people.sc.fsu.edu/~jburkardt/data/obj/obj.html
+
 #define MAX_NUM_VERTEX 65536*2
 #define PI 3.14159265358979323846
 

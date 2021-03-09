@@ -29,60 +29,61 @@ cd examples
 
 ## Examples
 ### test
-![](images/test.jpg)
+Test and benchmark of basic drawing methods.
 ```
 cd gu3000/src/examples/test
 make
 ./test
 ```
-Test and benchmark of basic drawing methods.
+![](images/test.jpg)
 
 ### fonttest
-![](images/fonttest_MICR.jpg)
-![](images/fonttest_H68TR.jpg)
+Show installed fonts.
 ```
 cd gu3000/src/examples/fonttest
 make
-./fonttest
 ```
-Show installed fonts.
+./fonttest
+![](images/fonttest_MICR.jpg)
+![](images/fonttest_H68TR.jpg)
 
 ### showwire
-click image to play movie
-[![](images/teapot.jpg)](https://www.youtube.com/watch?v=gbkjLUjZCEo "showwire teapot.obj")
+Show wire frame model.
+Many object models are available from https://people.sc.fsu.edu/~jburkardt/data/obj/obj.html
 ```
 cd gu3000/src/examples/showwire
 make
 ./showwire teapot.obj
 ```
+click image to play movie  
+[![](images/teapot.jpg)](https://www.youtube.com/watch?v=gbkjLUjZCEo "showwire teapot.obj")
 
 ### lifegame
-![](images/lifegame.jpg)
+Conway's Game of Life.
 ```
 cd gu3000/src/examples/lifegame
 make
 ./lifegame
 ```
-Conway's Game of Life.
+![](images/lifegame.jpg)
 
 ### showbmp
-![](images/lifegame.jpg)
+Show bmp file.
 ```
 cd gu3000/src/examples/showbmp
 make
 ./showbmp 256128sample.bmp
 ```
-Show bmp file.
+![](images/lifegame.jpg)
 
 ### viewtxt
-![](images/viewtxt.jpg)
+View text file. Several fonts are available.
 ```
 cd gu3000/src/examples/viewtxt
 make
 ./viewtxt sample.txt
 ```
-View text file. Several fonts are available.
-
+![](images/viewtxt.jpg)
 
 
 
