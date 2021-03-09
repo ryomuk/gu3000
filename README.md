@@ -74,7 +74,7 @@ cd gu3000/src/examples/showbmp
 make
 ./showbmp 256128sample.bmp
 ```
-![](images/lifegame.jpg)
+![](images/showbmp.jpg)
 
 ### viewtxt
 View text file. Several fonts are available.
