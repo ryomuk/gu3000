@@ -1,4 +1,5 @@
 # gu3000
+![](images/showbmp.jpg)
 
 Library for Noritake Itron GU3000 series (GU3100 and GU3900) VFD module parallel interface graphic DMA mode for Raspberry Pi
 
@@ -49,7 +50,7 @@ make
 MICR(Magnetic Ink Character Recognition) like font.
 ![](images/fonttest_MICR.jpg)
 
-Hitachi H68/TR seven segment LED console font.
+Hitachi H68/TR 7-segment LED console font.
 ![](images/fonttest_H68TR.jpg)
 
 ### showwire
