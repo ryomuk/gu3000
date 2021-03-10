@@ -1,10 +1,10 @@
 作成途中のドラフトです.(2021/3/10)
 
-## Noritake Itron GU3000シリーズ VFDモジュール用ライブラリマニュアル
+## Noritake Itron GU3000シリーズ VFDモジュール用Raspberry Piパラレルインターフェース説明書
 
 ### この文書について
 
-この文書は，Noritake Itron GU3000シリーズ VFDモジュール用に作成したプログラムについて説明するものです．
+この文書は，Noritake Itron GU3000シリーズ VFDモジュール用に作成したインターフェースについて説明するものです．
 ノリタケ伊勢電子株式会社(以下，Noritake Itron)とは一切関係のない個人が開発したものです．
 
 ### 開発に用いたハードウェア
@@ -18,41 +18,20 @@
 - Raspberry Pi 4
   - OS: Raspbian (Linux raspberrypi 5.4.72-v7l+ #1356)
 
+#使い方
 
-### グラフィックDMAモード用ライブラリ
-GU3000GraphicクラスはGU3000GPIOクラスとFrameBufferクラスを継承し，
-グラフィックDMAモードのVFDにFrameBufferの内容を表示する機能を実装したものです．
-
-### 概念図
-
-描画はFrameBufferのbuf上に行われます．
-buf[]はVFD::show()によってVFDのメモリdisplay_memory[]に転送されます．
-VFDに送られた内容はm_buf[]にもコピーされます．
-
-graphicDMAモードにおいてもVFDへの転送はそれなりに時間がかかるので，
-差分が含まれるエリア(差分が開始したところから終了したところまで)を転送します．
+## ハードウェア
 ```
-+-------------------------------
-|GU3000Graphic(= VFD)
-| (typedef GU3000Graphic VFD)
-|+-------------------+
-|| FrameBuffer       |
-||buf[WIDTH*HEIGHT]  |
-|+-------------------+
-|
-|m_buf[WIDTH*HEITH*面数]
-|
-|+-------------------+
-|| GU3000GPIO        |
-||  RDY   WR D0-D7   |
-|+-------------------+
-+--------------------------------
-    ↑    ↓  ↓
-+--------------------------------
-    RDY   WR D0-D7
-|  VFDモジュール
-|  display_memory[WIDTH*HEITH*面数]
-+--------------------------------
+Raspberry Pi 4/ Zero/ Zero W
+GPIO
+18  19  20...27
+^  
+|   |   | ...|  3.3V
+ Level converter 
+|   |   | ...|  5.0V
+    v   v    v
+RDY WR_ D0...D7
+VFD module
 ```
 
 ### VFDモジュールDIPスイッチの設定 *重要*
@@ -61,35 +40,110 @@ graphicDMAモードにおいてもVFDへの転送はそれなりに時間がか�
 
 ### VFDへの電源供給について
 電源: DC 5V (プラグ内径2.1mm/外径5.5mm, センタープラス)
-VFDの最大消費電流(全画素点灯時)は1.1Aです。
+VFDの最大消費電流(全画素点灯時)は1.1Aです．
 
 基板上のピンヘッダにより、
 GPIOの5VとVFD(インターフェースボードからの給電)の5Vを
-接続することができます。
-これにより、Raspberry PiにGPIO経由で給電することもできます。
-その場合には、それにあわせて十分な容量の電源をご用意下さい。
+接続することができます．
+これにより、Raspberry PiにGPIO経由で給電することもできます．
+その場合には、それにあわせて十分な容量の電源をご用意下さい．
 
 逆に、GPIOからの給電でVFDを動作させることも出来ますが、
-その場合もRaspberry Pi側の電源の容量を十分に確保して下さい。
+その場合もRaspberry Pi側の電源の容量を十分に確保して下さい．
 
 Raspberry Pi側給電と、VFD(インターフェースボード)側の給電で
 2つのACアダプタを使用する場合には、
-GPIO_VCCとVFD_VCCを切り離して下さい。
+GPIO_VCCとVFD_VCCを切り離して下さい．
 接続した状態で2つのACアダプタを使用すると、電源が並列に接続されるため、
-電位差による逆流によってACアダプタに悪影響を及ぼすおそれがあります。
+電位差による逆流によってACアダプタに悪影響を及ぼすおそれがあります．
 
 ![](../images/power.png)
 
-
+## ソフトウェア
 ### 事前にインストールが必要なもの
 wiringPi おそらくraspbianに標準でインストール済み．
-インストールされていない場合はインストールする．
+インストールされていない場合はインストールして下さい．
 ```
 sudo apt install wiringpi
 ```
+## ライブラリのbuild
+```
+git clone https://github.com/ryomuk/gu3000.git
+cd gu3000/src
+make
+cd examples
+./make.sh (もしくは，サブディレクトリでmake)
+```
 
+## サンプルプログラム
+### test
+Test and benchmark of basic drawing methods.
+```
+cd gu3000/src/examples/test
+make
+./test
+```
+![](../images/test.jpg)
 
+### fonttest
+Show installed fonts.
+```
+cd gu3000/src/examples/fonttest
+make
+./fonttest
+```
 
+MICR(Magnetic Ink Character Recognition) like font.
+![](../images/fonttest_MICR.jpg)
+
+Hitachi H68/TR 7-segment LED console font.
+![](../images/fonttest_H68TR.jpg)
+
+### showwire
+Show wire frame model.
+Many object models are available from https://people.sc.fsu.edu/~jburkardt/data/obj/obj.html
+```
+cd gu3000/src/examples/showwire
+make
+./showwire teapot.obj
+```
+click image to play movie  
+[![](../images/teapot.jpg)](https://www.youtube.com/watch?v=gbkjLUjZCEo "showwire teapot.obj")
+
+### lifegame
+Conway's Game of Life.
+```
+cd gu3000/src/examples/lifegame
+make
+./lifegame
+```
+![](../images/lifegame.jpg)
+
+### showbmp
+Show bmp file.
+```
+cd gu3000/src/examples/showbmp
+make
+./showbmp 256128sample.bmp
+```
+![](../images/showbmp.jpg)
+
+### viewtxt
+View text file. Several fonts are available.
+```
+cd gu3000/src/examples/viewtxt
+make
+./viewtxt sample.txt
+```
+![](../images/viewtxt.jpg)
+
+### console
+View console by copying /dev/fb0 to VFD.
+![](../images/console.jpg)
+
+### xwindow
+Xwindow on the VFD module.
+![](../images/xeyes.jpg)
 
 
 ## おまけ
