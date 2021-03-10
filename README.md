@@ -1,5 +1,6 @@
 # gu3000
-Library for Noritake Itron GU3000 series VFD module for Raspberry pi 4 and zero
+
+Library for Noritake Itron GU3000 series (GU3100 and GU3900) VFD module parallel interface graphic DMA mode for Raspberry Pi
 
 See documents in docs for further information.
 (Most of them are in Japanese, but Google or DeepL will translate them.)
@@ -84,6 +85,15 @@ make
 ./viewtxt sample.txt
 ```
 ![](images/viewtxt.jpg)
+
+### console
+View console by copying /dev/fb0 to VFD.
+![](images/console.jpg)
+
+### xwindow
+Xwindow on the VFD module.
+![](images/xeyes.jpg)
+
 
 
 
