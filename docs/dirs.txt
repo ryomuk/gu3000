@@ -2,19 +2,37 @@ gu3000
 |-- LICENSE
 |-- README.md
 |-- docs
-|   |-- README_JP.txt
-|   `-- addto_boot_config.txt
+|   |-- README_JP.md
+|   |-- addto_boot_config.txt
+|   |-- dirs.txt
+|   `-- xconf.txt
 |-- hardware
+|   |-- GU3000RasPiIF-gerber.zip
+|   |-- board0.pdf
+|   |-- board1.pdf
+|   |-- board2.pdf
 |   `-- schematics.pdf
+|-- images
+|   |-- badapple.jpg
+|   |-- colorbar.png
+|   |-- console.jpg
+|   |-- fonttest_H68TR.jpg
+|   |-- fonttest_MICR.jpg
+|   |-- lifegame.jpg
+|   |-- power.png
+|   |-- showbmp.jpg
+|   |-- teapot.jpg
+|   |-- test.jpg
+|   |-- test_benchmark.jpg
+|   |-- viewtxt.jpg
+|   |-- xeyes.jpg
+|   `-- xwininfo.jpg
 `-- src
     |-- Makefile
     |-- examples
-    |   |-- benchmark
-    |   |   |-- 256128sample.bmp
+    |   |-- brightness
     |   |   |-- Makefile
-    |   |   |-- benchmark.cpp
-    |   |   |-- writeAreaBitImage.dat
-    |   |   `-- writeBitImage.dat
+    |   |   `-- brightness.cpp
     |   |-- clean.sh
     |   |-- clear
     |   |   |-- Makefile
@@ -47,21 +65,16 @@ gu3000
     |   |-- make.sh
     |   |-- playbmp
     |   |   |-- Makefile
-    |   |   |-- Touhou_BadApplePV.bmp -> ../../../movie/Touhou_BadApplePV.bmp
-    |   |   |-- Touhou_BadApplePV.mp4 -> ../../../movie/Touhou_BadApplePV.mp4
     |   |   |-- makebmp.sh
     |   |   |-- play.sh
     |   |   |-- playbmp.cpp
-    |   |   `-- poi.sh
+    |   |   `-- sample.mp4
     |   |-- showbmp
     |   |   |-- 128x32d_7.bmp
     |   |   |-- 256128sample.bmp
     |   |   |-- 512x32_1.bmp
     |   |   |-- Makefile
-    |   |   |-- hoge.xwd
-    |   |   |-- poi.xwd
-    |   |   |-- showbmp.cpp
-    |   |   `-- test.bmp
+    |   |   `-- showbmp.cpp
     |   |-- showfb
     |   |   |-- Makefile
     |   |   |-- showfb.cpp
@@ -72,27 +85,9 @@ gu3000
     |   |   |-- diamond.obj
     |   |   |-- showwire.cpp
     |   |   `-- teapot.obj
-    |   |-- showxvfb
-    |   |   |-- Makefile
-    |   |   |-- gnuplot-5.2.6 -> ../../../../gnuplot-5.2.6
-    |   |   |-- showxvfb.cpp
-    |   |   |-- showxvfb_byfile
-    |   |   |   |-- Makefile
-    |   |   |   |-- X11
-    |   |   |   |   |-- XWDFile.h
-    |   |   |   |   `-- Xmd.h
-    |   |   |   |-- poi.xwd
-    |   |   |   |-- showxwd
-    |   |   |   |-- showxwd.cpp
-    |   |   |   |-- showxwd.o
-    |   |   |   `-- xvfb.sh
-    |   |   `-- xvfb.sh
     |   |-- test
     |   |   |-- Makefile
     |   |   `-- test.cpp
-    |   |-- typewriter
-    |   |   |-- Makefile
-    |   |   `-- typewriter.cpp
     |   `-- viewtxt
     |       |-- Makefile
     |       |-- helloworld.c
@@ -148,4 +143,3 @@ gu3000
     |-- gu3000normal.cpp
     `-- gu3000normal.h
 
-29 directories, 119 files

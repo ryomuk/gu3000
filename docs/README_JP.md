@@ -1,4 +1,4 @@
-作成途中のドラフトです.(2021/3/8)
+作成途中のドラフトです.(2021/3/10)
 
 ## Noritake Itron GU3000シリーズ VFDモジュール用ライブラリマニュアル
 
@@ -60,8 +60,7 @@ graphicDMAモードにおいてもVFDへの転送はそれなりに時間がか�
 (ソフトウェア仕様書 6.1.3 コマンドモード選択 参照)
 
 ### VFDへの電源供給について
-電源:
-DC 5V (プラグ内径2.1mm/外径5.5mm, センタープラス)
+電源: DC 5V (プラグ内径2.1mm/外径5.5mm, センタープラス)
 VFDの最大消費電流(全画素点灯時)は1.1Aです。
 
 基板上のピンヘッダにより、
@@ -83,47 +82,30 @@ GPIO_VCCとVFD_VCCを切り離して下さい。
 
 
 ### 事前にインストールが必要なもの
+wiringPi おそらくraspbianに標準でインストール済み．
+インストールされていない場合はインストールする．
 ```
-wiringPi おそらくraspbianに標準でインストール済み
-インストールされていない場合はインストール
-% sudo apt install wiringpi
-
-Xwindow関連(必要であれば)
-sudo apt install xorg-dev
-sudo apt install xvfb
-sudo apt install xfonts-utils
-sudo apt install xfont-base
-
-sudo apt install ncurses-dev
+sudo apt install wiringpi
 ```
 
 
-### お手軽なテスト
-```
-cd gu3000/src
-make
-cd examples
-./make.sh
-cd test
-./test
-```
 
-### コンソール画面の表示
-
-
-### Xwindowの表示
 
 
 ## おまけ
 ### ノーマルコマンドモード用ライブラリについて
-
-
+ノーマルコマンドモードは，描画処理をモジュール上のプロセッサで行うモードです．
+DIPスイッチの切り替えが必要なのと，通信オーバヘッドが大きく遅いので，
+対応するライブラリは途中まで作成して放置してあります．
+```
+gu3000normal.cpp
+gu3000normal.h
+examples.normalmode/
+```
 
 ### ノーマルコマンド使用方法
-
 コマンドモード選択(SW1 No.6): OFF ノーマルコマンドモードに設定します．
 (ソフトウェア仕様書 6.1.3 コマンドモード選択 参照)
-
 
 ## 参考文献
 Noritake Itronの下記サイトから現行品(GU3900B)の技術資料が入手可能です．
