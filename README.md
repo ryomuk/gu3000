@@ -93,7 +93,3 @@ View console by copying /dev/fb0 to VFD.
 ### xwindow
 Xwindow on the VFD module.
 ![](images/xeyes.jpg)
-
-
-
-
