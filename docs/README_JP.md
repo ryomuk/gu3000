@@ -1,24 +1,25 @@
 作成途中のドラフトです.(2021/3/10)
 
-## Noritake Itron GU3000シリーズ VFDモジュール用Raspberry Piパラレルインターフェース説明書
+# Noritake Itron GU3000シリーズ VFDモジュール用Raspberry Piパラレルインターフェース説明書
 
-### この文書について
+## この文書について
 
 この文書は，Noritake Itron GU3000シリーズ VFDモジュール用に作成したインターフェースについて説明するものです．
 ノリタケ伊勢電子株式会社(以下，Noritake Itron)とは一切関係のない個人が開発したものです．
 
-### 開発に用いたハードウェア
+# 開発環境
+## ハードウェア
 - Noritake Itron GU256x128C-3100
 - Raspbery Pi (4 および zero W)
 - GU3000RasPiIF(レベル変換用インターフェース(自作))
 
-### 開発環境
+## ソフトウェア(OS)
 - Raspbery Pi Zero W
   - OS: Raspbian (Linux raspberrypi 5.4.79+ #1373)
 - Raspberry Pi 4
   - OS: Raspbian (Linux raspberrypi 5.4.72-v7l+ #1356)
 
-#使い方
+#使用方法
 
 ## ハードウェア
 ```
@@ -34,11 +35,11 @@ RDY WR_ D0...D7
 VFD module
 ```
 
-### VFDモジュールDIPスイッチの設定 *重要*
+## VFDモジュールDIPスイッチの設定 *重要*
 コマンドモード選択(SW1 No.6): ON グラフィックDMAモードに設定します．
 (ソフトウェア仕様書 6.1.3 コマンドモード選択 参照)
 
-### VFDへの電源供給について
+## VFDへの電源供給について
 電源: DC 5V (プラグ内径2.1mm/外径5.5mm, センタープラス)
 VFDの最大消費電流(全画素点灯時)は1.1Aです．
 
@@ -66,7 +67,7 @@ wiringPi おそらくraspbianに標準でインストール済み．
 ```
 sudo apt install wiringpi
 ```
-## ライブラリのbuild
+### ライブラリのbuild
 ```
 git clone https://github.com/ryomuk/gu3000.git
 cd gu3000/src
@@ -137,13 +138,97 @@ make
 ```
 ![](../images/viewtxt.jpg)
 
+## /dev/fb0を利用した描画
+Raspberry Piの/dev/fb0を逐次(50ms毎等)VFDにコピーすることによって，
+コンソール画面やXwindowの画面を表示させることができます．
+上に紹介したサンプルプログラム類を同時に走らせると画面のちらつきが発生したり，正しく描画できないことがあるのでご注意下さい．
+
+下記方法は，HDMI出力を止めて/dev/fb0をVFDに表示するものです．
+HDMIからの画面出力はできなくなりますので，
+事前に，ssh等でリモートでログインできる環境を整えて下さい．
+
+私は面倒なのであきらめましたが，HDMIと両立させる方法もあるかと思いますので，
+両立させたい場合は適宜設定して下さい．
+
 ### console
-View console by copying /dev/fb0 to VFD.
+1. /dev/fb0 を作成 (HDMI出力は外す)
+/boot/config.txtに以下を追加
+```
+framebuffer_height=128	
+framebuffer_width=256
+hdmi_cvt=256 128 60 3 0 0 0
+hdmi_group=2
+hdmi_mode=87
+hdmi_force_hotplug=1
+```
+
+2. dev/fb0 をVFDに逐次表示するコマンド
+examples/showfb
+examples/showfb.sh
+を/usr/local/binにコピー
+
+3. 上記コマンドをサービスとして起動
+
+/etc/systemd/system/showfb.service を作成、下記を記述。
+```
+[Unit]
+Description=Show /dev/fb0 on VFD module
+After=console-setup.service
+
+[Service]
+ExecStart=/usr/local/bin/showfb.sh
+#ExecStart=/usr/local/bin/showfb
+WorkingDirectory=/tmp
+#StandardOutput=null
+#StandardInput=null
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
+```
+
+4. サービスを有効化．
+```
+sudo systemctrl enable showfb.service
+```
+
+無効化するときは下記の通り．
+```
+sudo systemctrl stop showfb.service
+```
 
 ![](../images/console.jpg)
 
-### xwindow
-Xwindow on the VFD module.
+### Xwindow
+# フレームバッファ/dev/fb0をVFDに表示するための設定
+
+
+###Xorg用設定
+/etc/X11/にxorg.confが無い．/usr/shar/X11/xorg.conf.dがある．
+
+下記内容のxorg.confを/etc/X11/xorg.confに置く
+```
+Section "Device"
+Identifier "testdevice"
+Driver  "fbdev"
+Option "fbdev" "/dev/fb0"
+EndSection
+
+Section "Monitor"
+Identifier "testmonitor"
+EndSection
+
+Section "Screen"
+Identifier "screen"
+Device "testdevice"
+Monitor "testmonitor"
+EndSection
+
+Section "ServerLayout"
+Identifier "default"
+Screen 0 "screen" 0 0
+EndSection
+```
 
 ![](../images/xeyes.jpg)
 
@@ -152,6 +237,7 @@ Xwindow on the VFD module.
 ノーマルコマンドモードは，描画処理をモジュール上のプロセッサで行うモードです．
 DIPスイッチの切り替えが必要なのと，通信オーバヘッドが大きく遅いので，
 対応するライブラリは途中まで作成して放置してあります．
+
 ```
 gu3000normal.cpp
 gu3000normal.h
