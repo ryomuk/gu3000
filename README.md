@@ -45,7 +45,11 @@ cd gu3000/src/examples/fonttest
 make
 ./fonttest
 ```
+
+MICR(Magnetic Ink Character Recognition) like font.
 ![](images/fonttest_MICR.jpg)
+
+Hitachi H68/TR seven segment LED console font.
 ![](images/fonttest_H68TR.jpg)
 
 ### showwire
