@@ -139,12 +139,13 @@ make
 
 ### console
 View console by copying /dev/fb0 to VFD.
+
 ![](../images/console.jpg)
 
 ### xwindow
 Xwindow on the VFD module.
-![](../images/xeyes.jpg)
 
+![](../images/xeyes.jpg)
 
 ## おまけ
 ### ノーマルコマンドモード用ライブラリについて
