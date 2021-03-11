@@ -25,10 +25,10 @@
 (ソフトウェア仕様書 6.1.3 コマンドモード選択 参照)
 
 ## ラズベリーパイとVFDの接続
-1. インターフェースボードをラズベリーパイのGPIOコネクタに接続  
+インターフェースボードをラズベリーパイのGPIOコネクタに接続  
 ![](../images/connect_gpio.jpg)
 
-2. インターフェースボードとVFDをケーブルで接続  
+インターフェースボードとVFDをケーブルで接続  
 ![](../images/connect_VFD.jpg)
 
 結線は下記のようになっています．
@@ -69,21 +69,21 @@ GPIO_VCCとVFD_VCCを切り離して下さい．
 
 ### ラズベリーパイとVFDそれぞれに別の電源を接続する場合の設定
 J2とJ3を切り離す(横向きジャンパー)  
-![](jumper_separatepower.jpg)
+![](../images/jumper_separatepower.jpg)
 
 ラズベリーパイ，インターフェースボードそれぞれ電源に接続する
-![](separate_power.jpg)
+![](../images/separate_power.jpg)
 
 ### ラズベリーパイとVFDの電源をを共有する設定
 J2(+5V(VFD))とJ3(+5V(GPIO)を接続する．(縦向きジャンパー)
 
-![](Jumper_sharepower.jpg)
+![](../images/jumper_sharepower.jpg)
 
 インターフェースボードを電源に接続する．  
-![](share_power1.jpg)
+![](../images/share_power1.jpg)
 
 又は，ラズベリーパイを電源に接続する．  
-![](share_power2.jpg)
+![](../images/share_power2.jpg)
 
 ## ソフトウェア
 ### 事前にインストールが必要なもの
