@@ -47,10 +47,10 @@ make
 ./fonttest
 ```
 
-MICR(Magnetic Ink Character Recognition) like font.
+MICR(Magnetic Ink Character Recognition) like font.  
 ![](images/fonttest_MICR.jpg)
 
-Hitachi H68/TR 7-segment LED console font.
+Hitachi H68/TR 7-segment LED console font.  
 ![](images/fonttest_H68TR.jpg)
 
 ### showwire
@@ -72,6 +72,26 @@ make
 ./lifegame
 ```
 ![](images/lifegame.jpg)
+
+### playbmp
+Play bitmap video data (rawvideo of ffmpeg).
+```
+cd gu3000/src/examples/playbmp
+make
+ffmpeg -i sample.mp4 -s 128x256 -pix_fmt monob -c:v rawvideo -f rawvideo -vf transpose=0 -an - | ./playbmp
+or
+./play.sh
+```
+Make rawvideo file and play. (for raspberry pi zero (low CPU power))
+```
+ffmpeg -i sample.mp4 -s 128x256 -pix_fmt monob -c:v rawvideo -f rawvideo -vf transpose=0 -an - > sample.bmp
+or
+./makebmp.sh
+./playbmp sample.bmp
+```
+
+Click to play movie  
+[![](images/badapple.jpg)](https://www.youtube.com/watch?v=wEan5ha9sWA "playbmp")
 
 ### showbmp
 Show bmp file.

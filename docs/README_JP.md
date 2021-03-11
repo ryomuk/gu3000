@@ -145,6 +145,26 @@ make
 ```
 ![](../images/lifegame.jpg)
 
+### playbmp
+ビットマップ動画(ffmpegのrawvideo)を再生します．
+```
+cd gu3000/src/examples/playbmp
+make
+ffmpeg -i sample.mp4 -s 128x256 -pix_fmt monob -c:v rawvideo -f rawvideo -vf transpose=0 -an - | ./playbmp
+又は
+./play.sh
+```
+raspberry pi zeroだとCPUパワーが足りないので，一旦ファイルにrawvideoのデータを作って再生します．
+```
+ffmpeg -i sample.mp4 -s 128x256 -pix_fmt monob -c:v rawvideo -f rawvideo -vf transpose=0 -an - > sample.bmp
+又は
+./makebmp.sh
+./playbmp sample.bmp
+```
+
+Bad Apple!! クリックして再生↓  
+[![](images/badapple.jpg)](https://www.youtube.com/watch?v=wEan5ha9sWA "playbmp")
+
 ### showbmp
 bmpファイルを表示します．
 ```
@@ -236,6 +256,9 @@ rebootしてコンソール画面で
 startx
 ```
 ![](../images/xeyes.jpg)
+
+↓クリックして動画を再生  
+[![](images/badapple_onX.jpg)](https://www.youtube.com/watch?v=z8M9jezuZ1E "Bad Apple on Xwindow")
 
 ## おまけ
 ### ノーマルコマンドモード用ライブラリについて
