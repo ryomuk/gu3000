@@ -261,7 +261,7 @@ startx
 ![](../images/xeyes.jpg)
 
 ↓クリックして動画を再生  
-[![](images/badapple_onX.jpg)](https://www.youtube.com/watch?v=z8M9jezuZ1E "Bad Apple on Xwindow")
+[![](../images/badapple_onX.jpg)](https://www.youtube.com/watch?v=z8M9jezuZ1E "Bad Apple on Xwindow")
 
 ## おまけ
 ### ノーマルコマンドモード用ライブラリについて
