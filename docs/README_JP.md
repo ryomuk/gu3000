@@ -163,7 +163,7 @@ ffmpeg -i sample.mp4 -s 128x256 -pix_fmt monob -c:v rawvideo -f rawvideo -vf tra
 ```
 
 Bad Apple!! クリックして再生↓  
-[![](images/badapple.jpg)](https://www.youtube.com/watch?v=wEan5ha9sWA "playbmp")
+[![](../images/badapple.jpg)](https://www.youtube.com/watch?v=wEan5ha9sWA "playbmp")
 
 ### showbmp
 bmpファイルを表示します．
