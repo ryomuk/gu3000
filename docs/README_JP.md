@@ -78,7 +78,7 @@ cd examples
 
 ## サンプルプログラム
 ### test
-Test and benchmark of basic drawing methods.
+簡単な描画と速度の測定．
 ```
 cd gu3000/src/examples/test
 make
@@ -87,32 +87,32 @@ make
 ![](../images/test.jpg)
 
 ### fonttest
-Show installed fonts.
+ライブラリに実装されたフォントの表示．
 ```
 cd gu3000/src/examples/fonttest
 make
 ./fonttest
 ```
 
-MICR(Magnetic Ink Character Recognition) like font.
+MICR(Magnetic Ink Character Recognition) like font.  
 ![](../images/fonttest_MICR.jpg)
 
-Hitachi H68/TR 7-segment LED console font.
+Hitachi H68/TR 7-segment LED console font.  
 ![](../images/fonttest_H68TR.jpg)
 
 ### showwire
-Show wire frame model.
-Many object models are available from https://people.sc.fsu.edu/~jburkardt/data/obj/obj.html
+ワイヤーフレームモデルの描画．下記のサイトにいろいろなデータがあります．
+https://people.sc.fsu.edu/~jburkardt/data/obj/obj.html
 ```
 cd gu3000/src/examples/showwire
 make
 ./showwire teapot.obj
 ```
-click image to play movie  
+↓クリックで動画再生
 [![](../images/teapot.jpg)](https://www.youtube.com/watch?v=gbkjLUjZCEo "showwire teapot.obj")
 
 ### lifegame
-Conway's Game of Life.
+ライフゲーム(Conway's Game of Life)です．
 ```
 cd gu3000/src/examples/lifegame
 make
@@ -121,7 +121,7 @@ make
 ![](../images/lifegame.jpg)
 
 ### showbmp
-Show bmp file.
+bmpファイルを表示します．
 ```
 cd gu3000/src/examples/showbmp
 make
@@ -151,6 +151,7 @@ HDMIからの画面出力はできなくなりますので，
 両立させたい場合は適宜設定して下さい．
 
 ### console
+### フレームバッファ/dev/fb0をVFDに表示するための設定
 1. /dev/fb0 を作成 (HDMI出力は外す)
 /boot/config.txtに以下を追加
 ```
@@ -200,7 +201,6 @@ sudo systemctrl stop showfb.service
 ![](../images/console.jpg)
 
 ### Xwindow
-# フレームバッファ/dev/fb0をVFDに表示するための設定
 
 
 ###Xorg用設定
