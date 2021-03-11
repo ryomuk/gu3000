@@ -12,6 +12,8 @@
 - GU3000RasPiIF(レベル変換用インターフェース(自作))
 
 ## OS
+Raspberry Pi ImagerでRaspbian(32bit版)をSDメモリに書き込んだもの．
+
 - Raspbery Pi Zero W
   - OS: Raspbian (Linux raspberrypi 5.4.79+ #1373)
 - Raspberry Pi 4
