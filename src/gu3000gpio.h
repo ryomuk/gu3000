@@ -25,7 +25,9 @@
 #define VFD_LSBFIRST 1
 #define VFD_DEFAULT_BITMAPORDER VFD_LSBFIRST
 
-#define VFD_TIMEOUT_RDY 2000 // ms
+//#define VFD_DEGUB_IGNORE_RDY  // comment out while debug without module
+
+#define VFD_TIMEOUT_RDY 2000 //(ms) timeout of GU3000GPIO::init()
 
 //
 // Class for Parallel Interface
@@ -41,11 +43,17 @@ public:
 	    int d4, int d5, int d6, int d7); 
   void setBitmapOrder(int order);
 protected:
-  inline void waitRDY();
   void writeByte(byte b);
   void writeByteImage(byte b);
   void writeWord(word w);
 private:
+  inline void waitRDY(){
+#ifndef VFD_DEGUB_IGNORE_RDY
+    while(!digitalRead(m_rdy)){
+    }
+#endif
+  }
+
   // hardware settings
   int m_rdy; // GPIO pinnumber
   int m_wr;  // GPIO pinnumber

@@ -56,14 +56,6 @@ void GU3000GPIO::init(int rdy, int wr,
 #endif
 }
 
-inline void GU3000GPIO::waitRDY(){
-#ifndef VFD_DEGUB_IGNORE_RDY
-  while(!digitalRead(m_rdy)){
-    // delayMicroseconds(1);
-  }
-#endif
-}
-
 void delayNanoseconds(unsigned int howLong)
 {
   struct timespec tNow, tEnd;

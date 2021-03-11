@@ -1,7 +1,4 @@
 # グラフィックDMAモード用ライブラリ
-GU3000GraphicクラスはGU3000GPIOクラスとFrameBufferクラスを継承し，
-グラフィックDMAモードのVFDにFrameBufferの内容を表示する機能を実装したものです．
-
 ## 概念図
 
 描画はFrameBufferのbuf上に行われます．
@@ -35,8 +32,18 @@ graphicDMAモードにおいてもVFDへの転送はそれなりに時間がか�
 ```
 
 ## GU3000GPIO クラス
+### void GU3000GPIO::init
+
+### void GU3000GPIO::init(int rdy, int wr,
+		     int d0, int d1, int d2, int d3,
+		     int d4, int d5, int d6, int d7){
+
+### GU3000GPIO::init()
+
 
 ## FrameBufferクラス
 
 ## GU3000Graphicクラス
+GU3000GraphicクラスはGU3000GPIOクラスとFrameBufferクラスを継承し，
+グラフィックDMAモードのVFDにFrameBufferの内容を表示する機能を実装したものです．
 
