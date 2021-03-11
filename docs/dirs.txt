@@ -3,9 +3,8 @@ gu3000
 |-- README.md
 |-- docs
 |   |-- README_JP.md
-|   |-- addto_boot_config.txt
-|   |-- dirs.txt
-|   `-- xconf.txt
+|   |-- LibraryManual.md
+|   `-- dirs.txt
 |-- hardware
 |   |-- GU3000RasPiIF-gerber.zip
 |   |-- board0.pdf

@@ -130,13 +130,17 @@ make
 ![](../images/showbmp.jpg)
 
 ### viewtxt
-View text file. Several fonts are available.
+テキストを表示します．フォントの選択ができます．
 ```
 cd gu3000/src/examples/viewtxt
 make
 ./viewtxt sample.txt
 ```
 ![](../images/viewtxt.jpg)
+
+# コンソール画面，Xwindowについて
+コンソール画面の表示や，Xwindowが起動できましたが，いろいろと試行錯誤してとりあえず出来たという感じなので，これが正しい方法かどうかは不明ですが，
+とりあえず私がやったことをまとめておきます．
 
 ## /dev/fb0を利用した描画
 Raspberry Piの/dev/fb0を逐次(50ms毎等)VFDにコピーすることによって，
@@ -163,73 +167,48 @@ hdmi_mode=87
 hdmi_force_hotplug=1
 ```
 
-2. dev/fb0 をVFDに逐次表示するコマンド
-examples/showfb
-examples/showfb.sh
-を/usr/local/binにコピー
+2. dev/fb0 をVFDに逐次表示するコマンド examples/showfb, examples/showfb.sh
+を/usr/local/binにコピー．
+それらコマンドをサービスとして起動するための設定．サービスを有効化．
 
-3. 上記コマンドをサービスとして起動
-
-/etc/systemd/system/showfb.service を作成、下記を記述。
 ```
-[Unit]
-Description=Show /dev/fb0 on VFD module
-After=console-setup.service
-
-[Service]
-ExecStart=/usr/local/bin/showfb.sh
-#ExecStart=/usr/local/bin/showfb
-WorkingDirectory=/tmp
-#StandardOutput=null
-#StandardInput=null
-Restart=always
-
-[Install]
-WantedBy=multi-user.target
-```
-
-4. サービスを有効化．
-```
+cd gu3000/src/examples/showfb
+make
+sudo cp showfb /usr/local/bin/
+sudo cp showfb.sh /usr/local/bin/
+sudo cp showfb.service /etc/systemd/system/
 sudo systemctrl enable showfb.service
 ```
 
-無効化するときは下記の通り．
+無効化したい場合は，下記のコマンドを実行．
 ```
 sudo systemctrl stop showfb.service
 ```
 
+リブートすると，VFDにコンソール画面が表示されます．
 ![](../images/console.jpg)
 
 ### Xwindow
-
-
 ###Xorg用設定
-/etc/X11/にxorg.confが無い．/usr/shar/X11/xorg.conf.dがある．
+gu3000/src/examples/showfb/xorg.confを/etc/X11/xorg.confにコピー．
+ラズパイ標準のX環境は小画面ではほとんど使えないので，
+小画面用のwindow manager(twm)を使う．
+.xsessionをユーザのホームディレクトリに置く．
+X用のフォントもインストール
 
-下記内容のxorg.confを/etc/X11/xorg.confに置く
 ```
-Section "Device"
-Identifier "testdevice"
-Driver  "fbdev"
-Option "fbdev" "/dev/fb0"
-EndSection
-
-Section "Monitor"
-Identifier "testmonitor"
-EndSection
-
-Section "Screen"
-Identifier "screen"
-Device "testdevice"
-Monitor "testmonitor"
-EndSection
-
-Section "ServerLayout"
-Identifier "default"
-Screen 0 "screen" 0 0
-EndSection
+cd gu3000/src/examples/showfb
+sudo cp xorg.conf /etc/X11/
+sudo apt install twm
+sudo apt install xfonts-base
+cp dot.xsession ~/.xsession
+cp dot.twmrc ~/.twmrc
 ```
 
+リブートしてコンソール画面で
+```
+startx
+```
 ![](../images/xeyes.jpg)
 
 ## おまけ

@@ -1,0 +1,219 @@
+#
+# Default twm configuration file; needs to be kept small to conserve string
+# space in systems whose compilers don't handle medium-sized strings.
+#
+# Sites should tailor this file, providing any extra title buttons, menus, etc.
+# that may be appropriate for their environment.  For example, if most of the
+# users were accustomed to uwm, the defaults could be set up not to decorate
+# any windows and to use meta-keys.
+#
+
+NoGrabServer
+RestartPreviousState
+DecorateTransients
+TitleFont "-misc-fixed-medium-r-normal--*-75-*-*-*-*-*-*"
+ResizeFont "-misc-fixed-medium-r-normal--*-75-*-*-*-*-*-*"
+MenuFont "-misc-fixed-medium-r-normal--*-75-*-*-*-*-*-*"
+IconFont "-misc-fixed-medium-r-normal--*-75-*-*-*-*-*-*"
+IconManagerFont "-misc-fixed-medium-r-normal--*-75-*-*-*"
+#ClientBorderWidth
+
+Color
+{
+	DefaultBackground	"black"
+	DefaultForeground	"white"
+	TitleBackground		"black"
+	TitleForeground		"white"
+	MenuBackground		"black"
+	MenuForeground		"white"
+	MenuTitleBackground	"black"
+	MenuTitleForeground	"white"
+	IconManagerBackground	"black"
+	IconManagerForeground	"white"
+	IconManagerHighlight	"white"
+	BorderColor		"white"
+}
+
+#
+# Define some useful functions for motion-based actions.
+#
+MoveDelta 3
+Function "move-or-lower" { f.move f.deltastop f.lower }
+Function "move-or-raise" { f.move f.deltastop f.raise }
+Function "move-or-iconify" { f.move f.deltastop f.iconify }
+
+#
+# Set some useful bindings.  Sort of uwm-ish, sort of simple-button-ish
+#
+Button1 = : root : f.menu "main"
+Button2 = : root : f.menu "windowops"
+
+Button1 = m : window|icon : f.function "move-or-lower"
+Button2 = m : window|icon : f.iconify
+Button3 = m : window|icon : f.function "move-or-raise"
+
+Button1 = : title : f.function "move-or-raise"
+Button2 = : title : f.raiselower
+
+Button1 = : icon : f.function "move-or-iconify"
+Button2 = : icon : f.iconify
+
+Button1 = : iconmgr : f.iconify
+Button2 = : iconmgr : f.iconify
+
+#
+# And a menus with the usual things
+#
+menu "main"
+{
+		"Main Menu"		f.title
+		"Debian"		f.menu "/Debian"
+		""			f.nop
+		"Show Icon Manager"	f.showiconmgr
+		"Hide Icon Manager"	f.hideiconmgr
+		""			f.nop
+		"Exit"			f.menu "Quit-Verify"
+}
+
+menu "Quit-Verify"
+{
+		"Really quit twm?"	f.title
+		"No, restart twm"	f.restart
+		"Yes, really quit"	f.quit
+}
+
+menu "windowops"
+{
+		"Window Ops"		f.title
+		""			f.nop
+		"Iconify"		f.iconify
+		"Resize"		f.resize
+		"Move"			f.move
+		"Raise"			f.raise
+		"Lower"			f.lower
+		""			f.nop
+		"Focus"			f.focus
+		"Unfocus"		f.unfocus
+		""			f.nop
+		"Delete"		f.delete
+		"Destroy"		f.destroy
+}
+
+# Automatically generated file. Do not edit (see /usr/share/doc/menu/html/index.html)
+
+menu "/Debian/Applications/Accessibility"
+{
+  "Xmag"    f.exec  "xmag &"
+}
+menu "/Debian/Applications/Editors"
+{
+  "Xedit"    f.exec  "xedit &"
+}
+menu "/Debian/Applications/Graphics"
+{
+  "X Window Snapshot"    f.exec  "xwd | xwud &"
+}
+menu "/Debian/Applications/Network/Communication"
+{
+  "Xbiff"    f.exec  "xbiff &"
+}
+menu "/Debian/Applications/Network/Web Browsing"
+{
+  "Dillo"    f.exec  "/usr/bin/dillo &"
+}
+menu "/Debian/Applications/Network"
+{
+  "Communication" f.menu "/Debian/Applications/Network/Communication"
+  "Web Browsing" f.menu "/Debian/Applications/Network/Web Browsing"
+}
+menu "/Debian/Applications/Programming"
+{
+  "GDB"    f.exec  "x-terminal-emulator  -T \"GDB\" -e sh -c \"/usr/bin/gdb\" &"
+}
+menu "/Debian/Applications/Science/Mathematics"
+{
+  "Dc"    f.exec  "x-terminal-emulator  -T \"Dc\" -e sh -c \"/usr/bin/dc\" &"
+  "galculator"    f.exec  "/usr/bin/galculator &"
+  "Xcalc"    f.exec  "xcalc &"
+}
+menu "/Debian/Applications/Science"
+{
+  "Mathematics" f.menu "/Debian/Applications/Science/Mathematics"
+}
+menu "/Debian/Applications/Shells"
+{
+  "Bash"    f.exec  "x-terminal-emulator  -T \"Bash\" -e sh -c \"/bin/bash --login\" &"
+  "Dash"    f.exec  "x-terminal-emulator  -T \"Dash\" -e sh -c \"/bin/dash -i\" &"
+  "Sh"    f.exec  "x-terminal-emulator  -T \"Sh\" -e sh -c \"/bin/sh --login\" &"
+}
+menu "/Debian/Applications/System/Administration"
+{
+  "Debian Task selector"    f.exec  "x-terminal-emulator  -T \"Debian Task selector\" -e sh -c \"su-to-root -c tasksel\" &"
+  "Editres"    f.exec  "editres &"
+  "Xclipboard"    f.exec  "xclipboard &"
+  "Xfontsel"    f.exec  "xfontsel &"
+  "Xkill"    f.exec  "xkill &"
+  "Xrefresh"    f.exec  "xrefresh &"
+}
+menu "/Debian/Applications/System/Hardware"
+{
+  "Xvidtune"    f.exec  "xvidtune &"
+}
+menu "/Debian/Applications/System/Monitoring"
+{
+  "Pstree"    f.exec  "x-terminal-emulator  -T \"Pstree\" -e sh -c \"/usr/bin/pstree.x11\" &"
+  "Top"    f.exec  "x-terminal-emulator  -T \"Top\" -e sh -c \"/usr/bin/top\" &"
+  "Xconsole"    f.exec  "xconsole -file /dev/xconsole &"
+  "Xev"    f.exec  "x-terminal-emulator -e xev &"
+  "Xload"    f.exec  "xload &"
+}
+menu "/Debian/Applications/System"
+{
+  "Administration" f.menu "/Debian/Applications/System/Administration"
+  "Hardware" f.menu "/Debian/Applications/System/Hardware"
+  "Monitoring" f.menu "/Debian/Applications/System/Monitoring"
+}
+menu "/Debian/Applications/Viewers"
+{
+  "Xditview"    f.exec  "xditview &"
+}
+menu "/Debian/Applications"
+{
+  "Accessibility" f.menu "/Debian/Applications/Accessibility"
+  "Editors" f.menu "/Debian/Applications/Editors"
+  "Graphics" f.menu "/Debian/Applications/Graphics"
+  "Network" f.menu "/Debian/Applications/Network"
+  "Programming" f.menu "/Debian/Applications/Programming"
+  "Science" f.menu "/Debian/Applications/Science"
+  "Shells" f.menu "/Debian/Applications/Shells"
+  "System" f.menu "/Debian/Applications/System"
+  "Viewers" f.menu "/Debian/Applications/Viewers"
+}
+menu "/Debian/Games/Toys"
+{
+  "Oclock"    f.exec  "oclock &"
+  "Xclock (analog)"    f.exec  "xclock -analog &"
+  "Xclock (digital)"    f.exec  "xclock -digital -update 1 &"
+  "Xeyes"    f.exec  "xeyes &"
+  "Xlogo"    f.exec  "xlogo &"
+}
+menu "/Debian/Games"
+{
+  "Toys" f.menu "/Debian/Games/Toys"
+}
+menu "/Debian/Help"
+{
+  "Info"    f.exec  "x-terminal-emulator  -T \"Info\" -e sh -c \"info\" &"
+  "Xman"    f.exec  "xman &"
+}
+menu "/Debian/Window Managers"
+{
+ "Twm" f.startwm "twm"
+}
+menu "/Debian"
+{
+  "Applications" f.menu "/Debian/Applications"
+  "Games" f.menu "/Debian/Games"
+  "Help" f.menu "/Debian/Help"
+  "Window Managers" f.menu "/Debian/Window Managers"
+}
