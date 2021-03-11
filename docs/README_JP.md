@@ -254,7 +254,7 @@ cp dot.xsession ~/.xsession
 cp dot.twmrc ~/.twmrc
 ```
 
-rebootしてコンソール画面で
+rebootしてコンソール画面でログインしてxサーバを起動．
 ```
 startx
 ```
