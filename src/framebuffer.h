@@ -34,6 +34,7 @@ public:
   // basic mehods
   //
   void init(int width, int height);
+  //
   void fill(byte b);
   void clear();
   //

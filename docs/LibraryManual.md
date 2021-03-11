@@ -32,18 +32,73 @@ graphicDMAモードにおいてもVFDへの転送はそれなりに時間がか�
 ```
 
 ## GU3000GPIO クラス
-### void GU3000GPIO::init
+### void GU3000GPIO::init()
 
-### void GU3000GPIO::init(int rdy, int wr,
-		     int d0, int d1, int d2, int d3,
-		     int d4, int d5, int d6, int d7){
+### void GU3000GPIO::init(int rdy, int wr, int d0, int d1, int d2, int d3, int d4, int d5, int d6, int d7)
 
-### GU3000GPIO::init()
+### void GU3000GPIO::writeByte(byte byteData)
+
+### void GU3000GPIO::setBitmapOrder(int order)
+
+### void GU3000GPIO::writeByteImage(byte byteData)
+```
+VFD hardware pixel mapping is MSB first (why??)
+See software manual (section 5.2(page 63))
+      x
+y     0 1 2 3 4 5... 255
+0  D7
+   D6
+   D5
+   D4
+   D3
+   D2
+   D1
+   D0
+1  D7
+   D6
+   D5
+   D4
+   .
+   .
+```
+
+### void GU3000GPIO::writeWord(word wordData)
 
 
 ## FrameBufferクラス
+### 座標系
+
+### public 変数
+- int WIDTH;
+- int HEIGHT;
+- int bufsize;
+- int cursor_x;
+- int cursor_y;
+- Font *font;
+- Font **fontList;
+
+### void FrameBuffer::init(int x, int y)
+
+### void FrameBuffer::setCursor(int x, int y)
+
+### int FrameBuffer::getPixel(int x, int y)
+
+### FrameBuffer::getPixelMSBfirst(int x, int y)
+
+### void FrameBuffer::drawPixel(int x, int y, int pen)
+  void fill(byte b);
+  void clear();
+
+
+
+
+
+
+
 
 ## GU3000Graphicクラス
 GU3000GraphicクラスはGU3000GPIOクラスとFrameBufferクラスを継承し，
 グラフィックDMAモードのVFDにFrameBufferの内容を表示する機能を実装したものです．
+
+###
 

@@ -38,6 +38,17 @@ void FrameBuffer::init(int x, int y){
   setTabstop(FRAMEBUFFER_DEFAULT_TABSTOP);
 }
 
+void FrameBuffer::fill(byte c){
+  for(int i = 0; i < bufsize; i++){
+    buf[i] = c;
+  }
+}
+
+void FrameBuffer::clear(){
+  fill(0);
+  setCursor(0, 0);
+}
+
 void FrameBuffer::setCursor(int x, int y){
   cursor_x = x;
   cursor_y = y;
@@ -253,18 +264,6 @@ void FrameBuffer::drawLine(int x0, int y0, int x1, int y1, int pen){
   } else {
     writeLine(x0, y0, x1, y1, pen);
   }
-}
-
-
-void FrameBuffer::fill(byte c){
-  for(int i = 0; i < bufsize; i++){
-    buf[i] = c;
-  }
-}
-
-void FrameBuffer::clear(){
-  fill(0);
-  setCursor(0, 0);
 }
 
 void FrameBuffer::setFont(Font *f){
