@@ -20,8 +20,14 @@
   - OS: Raspbian (Linux raspberrypi 5.4.72-v7l+ #1356)
 
 #使用方法
+## VFDモジュールDIPスイッチの設定 ★★重要★★★
+コマンドモード選択(SW1 No.6): ON グラフィックDMAモードに設定します．
+(ソフトウェア仕様書 6.1.3 コマンドモード選択 参照)
 
-## ハードウェア
+## ラズベリーパイとVFDの接続
+1. インターフェースボードをラズベリーパイのGPIOコネクタに接続
+2. インターフェースボードとVFDをケーブルで接続
+結線は下記のようになっています．
 ```
 Raspberry Pi 4/ Zero/ Zero W
 GPIO
@@ -34,11 +40,6 @@ GPIO
 RDY WR_ D0...D7
 VFD module
 ```
-
-## VFDモジュールDIPスイッチの設定 *重要*
-コマンドモード選択(SW1 No.6): ON グラフィックDMAモードに設定します．
-(ソフトウェア仕様書 6.1.3 コマンドモード選択 参照)
-
 ## VFDへの電源供給について
 電源: DC 5V (プラグ内径2.1mm/外径5.5mm, センタープラス)
 VFDの最大消費電流(全画素点灯時)は1.1Aです．
@@ -108,7 +109,7 @@ cd gu3000/src/examples/showwire
 make
 ./showwire teapot.obj
 ```
-↓クリックで動画再生
+↓クリックで動画再生  
 [![](../images/teapot.jpg)](https://www.youtube.com/watch?v=gbkjLUjZCEo "showwire teapot.obj")
 
 ### lifegame
@@ -189,12 +190,12 @@ sudo systemctrl stop showfb.service
 ![](../images/console.jpg)
 
 ### Xwindow
-###Xorg用設定
+### Xorg用設定
 gu3000/src/examples/showfb/xorg.confを/etc/X11/xorg.confにコピー．
 ラズパイ標準のX環境は小画面ではほとんど使えないので，
 小画面用のwindow manager(twm)を使う．
 .xsessionをユーザのホームディレクトリに置く．
-X用のフォントもインストール
+X用のフォントもインストールする．
 
 ```
 cd gu3000/src/examples/showfb
@@ -205,7 +206,7 @@ cp dot.xsession ~/.xsession
 cp dot.twmrc ~/.twmrc
 ```
 
-リブートしてコンソール画面で
+rebootしてコンソール画面で
 ```
 startx
 ```
