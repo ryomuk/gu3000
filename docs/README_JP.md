@@ -89,7 +89,7 @@ J2(+5V(VFD))とJ3(+5V(GPIO)を接続する．(縦向きジャンパー)
 
 ## ソフトウェア
 ### 事前にインストールが必要なもの
-GPIO制御にwiringPi(http://wiringpi.com/)を使用しています．
+GPIO制御にwiringPi( http://wiringpi.com/ )を使用しています．
 おそらくraspbianに標準でインストールされていますが，
 もしインストールされていない場合はインストールして下さい．
 ```
