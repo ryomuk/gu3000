@@ -1,11 +1,11 @@
-### グラフィックDMAモード用ライブラリ
+# グラフィックDMAモード用ライブラリ
 GU3000GraphicクラスはGU3000GPIOクラスとFrameBufferクラスを継承し，
 グラフィックDMAモードのVFDにFrameBufferの内容を表示する機能を実装したものです．
 
-### 概念図
+## 概念図
 
 描画はFrameBufferのbuf上に行われます．
-buf[]はVFD::show()によってVFDのメモリdisplay_memory[]に転送されます．
+buf[]はVFD::show()によってVFDの表示メモリ(display_memory[])に転送されます．
 VFDに送られた内容はm_buf[]にもコピーされます．
 
 graphicDMAモードにおいてもVFDへの転送はそれなりに時間がかかるので，
@@ -19,7 +19,7 @@ graphicDMAモードにおいてもVFDへの転送はそれなりに時間がか�
 ||buf[WIDTH*HEIGHT]  |
 |+-------------------+
 |
-|m_buf[WIDTH*HEITH*面数]
+|m_buf[WIDTH*HEIGHT*面数]
 |
 |+-------------------+
 || GU3000GPIO        |
@@ -30,6 +30,13 @@ graphicDMAモードにおいてもVFDへの転送はそれなりに時間がか�
 +--------------------------------
     RDY   WR D0-D7
 |  VFDモジュール
-|  display_memory[WIDTH*HEITH*面数]
+|  display_memory[WIDTH*HEIGHT*面数]
 +--------------------------------
 ```
+
+## GU3000GPIO クラス
+
+## FrameBufferクラス
+
+## GU3000Graphicクラス
+
