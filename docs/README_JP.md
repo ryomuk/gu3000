@@ -203,7 +203,7 @@ HDMIからの画面出力はできなくなりますので，
 私は面倒なのであきらめましたが，HDMIと両立させる方法もあるかと思いますので，
 両立させたい場合は適宜設定して下さい．
 
-### console
+## console
 ### フレームバッファ/dev/fb0をVFDに表示するための設定
 1. /dev/fb0 を作成 (HDMI出力は外す)
 /boot/config.txtに以下を追加
@@ -237,7 +237,7 @@ sudo systemctrl stop showfb.service
 リブートすると，VFDにコンソール画面が表示されます．
 ![](../images/console.jpg)
 
-### Xwindow
+## Xwindow
 ### Xorg用設定
 gu3000/src/examples/showfb/xorg.confを/etc/X11/xorg.confにコピー．
 ラズパイ標準のX環境は小画面ではほとんど使えないので，
