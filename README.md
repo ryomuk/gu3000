@@ -100,3 +100,6 @@ View console by copying /dev/fb0 to VFD.
 Xwindow on the VFD module.
 
 ![](images/xeyes.jpg)
+
+click image to play movie  
+[![](images/badapple_onX.jpg)](https://www.youtube.com/watch?v=z8M9jezuZ1E "Bad Apple on Xwindow")
