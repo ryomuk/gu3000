@@ -5,13 +5,13 @@
 インターフェースボードやプログラムは，
 ノリタケ伊勢電子株式会社(以下，Noritake Itron)とは一切関係のない個人が開発したものです．
 
-# 開発環境
+# 開発環境および実行環境
 ## ハードウェア
 - Noritake Itron GU256x128C-3100
 - Raspbery Pi (4 および zero W)
 - GU3000RasPiIF(レベル変換用インターフェース(自作))
 
-## ソフトウェア(OS)
+## OS
 - Raspbery Pi Zero W
   - OS: Raspbian (Linux raspberrypi 5.4.79+ #1373)
 - Raspberry Pi 4
