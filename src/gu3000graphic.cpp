@@ -21,13 +21,6 @@ void GU3000Graphic::init(int x, int y, int memsize){
 
 }
 
-// Flush last incompleted command (ex. copy large bitmap)
-void GU3000Graphic::flushCommandData(){
-  for(int i = 0; i < m_disp_memsize ; i++){
-    writeByte(0);
-  }
-}
-
 void GU3000Graphic::setDAD(word displayAddress){
   m_dad = displayAddress;
 }
@@ -37,14 +30,10 @@ void GU3000Graphic::setBitmapOrder(int order)
   GU3000GPIO::setBitmapOrder(order);
 }
 
-//
-// Graphic DMA Mode Commands
-//
-void GU3000Graphic::writeCommand(byte commandCode){
-  writeByte(0x02); // command header 1(STX)
-  writeByte(0x44); // command header 2
-  writeByte(m_dad);
-  writeByte(commandCode);
+void GU3000Graphic::setDisplayStartAddress(word startAddress){
+  writeCommand(0x53);
+  writeWord(startAddress);
+  m_disp_startaddr = startAddress;
 }
 
 void GU3000Graphic::writeBitImage(word startAddress, word size, byte *imagedata){
@@ -72,29 +61,27 @@ void GU3000Graphic::writeAreaBitImage(word startAddress,
   }
 }
 
-void GU3000Graphic::syncNextCommand(){
-  writeCommand(0x57);
-  writeByte(0x01);
-}
-
 void GU3000Graphic::setBrightness(byte brightness){
   writeCommand(0x58);
   writeByte(brightness);
 }
 
-
-void GU3000Graphic::setDisplayStartAddress(word startAddress){
-  writeCommand(0x53);
-  writeWord(startAddress);
-  m_disp_startaddr = startAddress;
+void GU3000Graphic::syncNextCommand(){
+  writeCommand(0x57);
+  writeByte(0x01);
 }
 
 void GU3000Graphic::updateDisplayStartAddress(){
   setDisplayStartAddress(m_disp_startaddr);
 }
 
-void GU3000Graphic::clearFrameBuffer(){
-  FrameBuffer::clear();
+void GU3000Graphic::rotateAndSetDisplayStartAddress(){
+  rotateButNotSetDisplayStartAddress();
+  updateDisplayStartAddress();
+}
+
+void GU3000Graphic::rotateButNotSetDisplayStartAddress(){
+  m_disp_startaddr = (m_disp_startaddr + m_disp_areasize) % m_disp_memsize;
 }
 
 void GU3000Graphic::clear(){
@@ -109,13 +96,8 @@ void GU3000Graphic::clear(){
   setDisplayStartAddress(0);
 }
 
-void GU3000Graphic::rotateButNotSetDisplayStartAddress(){
-  m_disp_startaddr = (m_disp_startaddr + m_disp_areasize) % m_disp_memsize;
-}
-
-void GU3000Graphic::rotateAndSetDisplayStartAddress(){
-  rotateButNotSetDisplayStartAddress();
-  updateDisplayStartAddress();
+void GU3000Graphic::clearFrameBuffer(){
+  FrameBuffer::clear();
 }
 
 // Sending whole buffer takes time (ex. s256x128 buffer takes 12ms),
@@ -169,4 +151,21 @@ void GU3000Graphic::syncRotateAndShow(){
 void GU3000Graphic::showAllArea(){
   m_first_show = true;
   show();
+}
+
+// Flush last incompleted command (ex. copy large bitmap)
+void GU3000Graphic::flushCommandData(){
+  for(int i = 0; i < m_disp_memsize ; i++){
+    writeByte(0);
+  }
+}
+
+//
+// Graphic DMA Mode Commands
+//
+void GU3000Graphic::writeCommand(byte commandCode){
+  writeByte(0x02); // command header 1(STX)
+  writeByte(0x44); // command header 2
+  writeByte(m_dad);
+  writeByte(commandCode);
 }
