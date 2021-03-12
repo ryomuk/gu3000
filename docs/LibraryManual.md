@@ -1,4 +1,4 @@
-# グラフィックDMAモード用ライブラリ
+# グラフィックDMAモード用ライブラリリファレンスマニュアル
 # 概念図
 
 描画はFrameBufferのbuf上に行われます．
@@ -195,7 +195,7 @@ VFDモジュール内蔵コマンドに対応
 ###  word m_disp_areasize;
 ###  word m_disp_startaddr;
 ###  word m_dad = VFD_DAD_BROADCAST;
-## private変数
+## private関数
 ###  void flushCommandData();
 ###  void writeCommand(byte command);
 ###  // DAD(Display Address for using multiple VFD modules)
