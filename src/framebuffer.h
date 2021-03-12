@@ -25,7 +25,7 @@ public:
   byte *buf = NULL;
   int WIDTH;
   int HEIGHT;
-  int bufsize;
+  int bufsize; // = WIDTH * HEIGHT / 8
   int cursor_x;
   int cursor_y;
   Font *font;
@@ -35,7 +35,7 @@ public:
   //
   void init(int width, int height);
   //
-  void fill(byte b);
+  void fill(byte c);
   void clear();
   //
   // methods for  drawing graphics
@@ -56,11 +56,11 @@ public:
   //
   // methods for drawing characters
   //
+  void putchar(int c);
+  void puts(const char *s);
   void drawChar(int x, int y, byte c);
   void setCursor(int x, int y);
   void scrollByte();
-  void putchar(int c);
-  void puts(const char *s);
   void setTabstop(int n);
   //
   // methods for fonts
@@ -83,9 +83,9 @@ private:
   //
   // for grahpics
   //
+  void writeLine(int x0, int y0, int x1, int y1, int pen);
   void writeFastVline(int x, int y, int vlength, int pen);
   void writeFastHline(int x, int y, int hlength, int pen);
-  void writeLine(int x0, int y0, int x1, int y1, int pen);
   //
   // for font and characters
   //

@@ -1,5 +1,5 @@
 # グラフィックDMAモード用ライブラリ
-## 概念図
+# 概念図
 
 描画はFrameBufferのbuf上に行われます．
 buf[]はVFD::show()によってVFDの表示メモリ(display_memory[])に転送されます．
@@ -31,7 +31,8 @@ graphicDMAモードにおいてもVFDへの転送はそれなりに時間がか�
 +--------------------------------
 ```
 
-## GU3000GPIO クラス
+# GU3000GPIO クラス
+## Public関数
 ### void GU3000GPIO::init()
 
 ### void GU3000GPIO::init(int rdy, int wr, int d0, int d1, int d2, int d3, int d4, int d5, int d6, int d7)
@@ -65,32 +66,57 @@ y     0 1 2 3 4 5... 255
 ### void GU3000GPIO::writeWord(word wordData)
 
 
-## FrameBufferクラス
-### 座標系
+# FrameBufferクラス
+## 座標系
+左上が原点です．回転は実装していません．
+```
+(0, 0) ...          (WIDTH-1, 0)
+.
+.
+.
+(0, HEIGHT-1)       (WIDTH-1, HEIGHT-1)
+```
 
-### public 変数
-- int WIDTH;
-- int HEIGHT;
-- int bufsize;
-- int cursor_x;
-- int cursor_y;
-- Font *font;
-- Font **fontList;
+## Public変数
+### byte *buf
+フレームバッファのメモリです．1bit/1ピクセル．
+MycroPythonのframebufで言う，'MONO_VLSB'です．
 
+VFDモジュールにあわせて，垂直方向にアドレスが並ぶようになっています．
+VFDモジュールの表示メモリはMSBが上(座標が小さい側, MSB first)ですが，
+普通はLSB firstだと思うので，LSB firstで実装しています．
+MycroPythonのframebufにも'MONO_VMSB'は無かったので．
+でもなぜかffmpegのrawvideoはMSB firstのようです．
+
+### int WIDTH
+### int HEIGHT
+### int bufsize
+WIDTH * HEIGHT / 8 です．ループで出てくることが多い値なので，個別の変数にしています．
+
+### int cursor_x
+文字描画用のカーソル位置(x座標)．
+
+### int cursor_y
+文字描画用のカーソル位置(y座標)．
+
+### Font *font
+文字描画用のフォント．
+
+### Font **fontList
+ライブラリ内蔵フォントのリスト．
+
+## Public関数
 ### void FrameBuffer::init(int x, int y)
 
 ### void FrameBuffer::setCursor(int x, int y)
 
 ### int FrameBuffer::getPixel(int x, int y)
 
-### FrameBuffer::getPixelMSBfirst(int x, int y)
+#### FrameBuffer::getPixelMSBfirst(int x, int y)
 
 ### void FrameBuffer::drawPixel(int x, int y, int pen)
-  void fill(byte b);
-  void clear();
-
-
-
+###  void fill(byte b);
+###  void clear();
 
 
 
