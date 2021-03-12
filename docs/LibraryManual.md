@@ -37,9 +37,10 @@ graphicDMAモードにおいてもVFDへの転送はそれなりに時間がか�
 
 ### void GU3000GPIO::init(int rdy, int wr, int d0, int d1, int d2, int d3, int d4, int d5, int d6, int d7)
 
-### void GU3000GPIO::writeByte(byte byteData)
-
 ### void GU3000GPIO::setBitmapOrder(int order)
+
+## Protected関数
+### void GU3000GPIO::writeByte(byte byteData)
 
 ### void GU3000GPIO::writeByteImage(byte byteData)
 ```
@@ -65,6 +66,14 @@ y     0 1 2 3 4 5... 255
 
 ### void GU3000GPIO::writeWord(word wordData)
 
+## private変数
+###  int m_rdy; // GPIO pinnumber
+###  int m_wr;  // GPIO pinnumber
+###  int m_d0, m_d1, m_d2, m_d3, m_d4, m_d5, m_d6, m_d7;  // GPIO pinnumber
+###  int m_bitmapOrder; // Bit Order of Image Data
+
+## private関数
+###  inline void waitRDY()
 
 # FrameBufferクラス
 ## 座標系
@@ -118,13 +127,76 @@ WIDTH * HEIGHT / 8 です．ループで出てくることが多い値なので�
 ###  void fill(byte b);
 ###  void clear();
 
+## privage変数
+###  int m_ybytes; // = HEIGHT / 8
+###  byte *m_font_bitmap;
+###  int m_font_width;
+###  int m_font_height;
+###  int m_font_xspace;
+###  int m_font_yspace;
+###  byte m_font_firstcode;
+###  byte m_font_lastcode;
+###  int m_font_num_chars;
+###  int m_font_bytes;
+###  int m_font_proportional = false;
+###  const byte **m_pfont_bitmap_ptr = NULL;
+###  int *m_pfont_width = NULL;
 
-
-
+## private関数
+###  void writeLine(int x0, int y0, int x1, int y1, int pen);
+###  void writeFastVline(int x, int y, int vlength, int pen);
+###  void writeFastHline(int x, int y, int hlength, int pen);
+###  int bitmapContentWidth(const byte *bitmap, int width, int height);
+###  const byte *bitmapContentTop(const byte *bitmap, int width, int height);
 
 ## GU3000Graphicクラス
-GU3000GraphicクラスはGU3000GPIOクラスとFrameBufferクラスを継承し，
-グラフィックDMAモードのVFDにFrameBufferの内容を表示する機能を実装したものです．
+GU3000Graphicクラスは，
+FrameBufferクラスをpublicで，GU3000GPIOクラスをprivateで継承したクラスです．
+グラフィックDMAモードのVFDにFrameBufferの内容を表示する機能を実装しています．
 
-###
+## Public変数
+### int xsize
+### int ysize
+
+## Public関数
+###  void init()
+{
+   init(VFD_Xdots, VFD_Ydots, VFD_DispMemSize);
+};
+### void init(int x, int y, int memsize);
+###   void setDAD(word displayAddress); // displayAddress(for multiple VFD);
+###   void setBitmapOrder(int order);
+
+###   void setDisplayStartAddress(word displayStartAddress);
+VFDモジュール内蔵コマンドに対応
+###   void writeBitImage(word address,  word imagesize, byte *bitmap);
+VFDモジュール内蔵コマンドに対応
+###   void writeAreaBitImage(word address, word xbyte, word ybyte, byte *bitmap);
+VFDモジュール内蔵コマンドに対応
+###   void setBrightness(byte brightness);
+VFDモジュール内蔵コマンドに対応
+###   void syncNextCommand();
+VFDモジュール内蔵コマンドに対応
+
+###  void updateDisplayStartAddress();    // address = DisplayStartAddress
+###  void rotateAndSetDisplayStartAddress(); 
+###  void rotateButNotSetDisplayStartAddress();
+###  void clear();
+###    void clearFrameBuffer();
+###    void show();
+###    void rotateAndShow();
+###    void syncAndShow();
+###    void syncRotateAndShow();
+###    void showAllArea();
+## private変数
+###  byte *m_buf = NULL;
+###  bool m_first_show;
+###  word m_disp_memsize;
+###  word m_disp_areasize;
+###  word m_disp_startaddr;
+###  word m_dad = VFD_DAD_BROADCAST;
+## private変数
+###  void flushCommandData();
+###  void writeCommand(byte command);
+###  // DAD(Display Address for using multiple VFD modules)
 
