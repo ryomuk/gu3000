@@ -420,28 +420,30 @@ void FrameBuffer::loadBitmapBytePerPixel(byte *bmp, int width , int height){
   }
 } 
 
+//
+// Bresenham's line algorithm
+//
 void FrameBuffer::writeLine(int x0, int y0, int x1, int y1, int pen){
   int dx, dy, sx, sy, a, a1, e;
         
-  if(x0 <= x1){
-    dx = x1 - x0;
+  if(x1 >= x0){
+    dx = x1 - x0; // x1 >= x0, dx >= 0
     sx = 1;
   } else {
-    dx = x0 - x1;
+    dx = x0 - x1; // x0 >= x1, dx > 0
     sx = -1;
   }
-  if(y0 <= y1){
-    dy = y1 - y0;
+  if(y1 >= y0){
+    dy = y1 - y0; // y1 >= y0, dy >= 0
     sy = 1;
   } else {
-    dy = y0 - y1;
+    dy = y0 - y1; // y0 > y1, dy > 0
     sy = -1;
   }
   if(dx >= dy){
     a  = 2 * dy;
     a1 = a - 2 * dx;
     e  = a - dx;
-    
     while(1){
       drawPixel(x0, y0, pen);
       if(x0 == x1) break;
@@ -459,9 +461,7 @@ void FrameBuffer::writeLine(int x0, int y0, int x1, int y1, int pen){
     e  = a - dy;
     while(1){
       drawPixel(x0, y0, pen);
-      
       if(y0 == y1) break;
-      
       if(e >= 0){
 	x0 += sx;
 	e += a1;
@@ -495,15 +495,16 @@ void FrameBuffer::writeFastVline(int x, int y, int vlength, int pen){
 				  0b01111111,
 				  0b11111111};
 
-  if(x < 0 || x >= WIDTH) return;
+  if(x < 0 || x >= WIDTH || y >= HEIGHT) return;
   if( y < 0){
     vlength = vlength - (-y);
+    if(vlength < 0) return;
     y = 0;
   };
   if(y + vlength >= HEIGHT){
     vlength = HEIGHT - y - 1;
   }
-  
+
   i_start = x*m_ybytes + (y / 8);
   i_end   = x*m_ybytes + ((y+vlength) / 8);
 
@@ -537,15 +538,16 @@ void FrameBuffer::writeFastHline(int x, int y, int hlength, int pen){
 
   byte bitpattern;
 
-  if(y < 0 || y >= HEIGHT) return;
+  if(y < 0 || y >= HEIGHT || x >= WIDTH) return;
   if( x < 0){
     hlength = hlength - (-x);
+    if( hlength < 0) return;
     x = 0;
   };
   if(x + hlength >= WIDTH){
     hlength = WIDTH - x - 1;
   }
-
+  
   i_start = x*m_ybytes + (y / 8);
   i_end   = (x+hlength)*m_ybytes + (y/ 8);
     
