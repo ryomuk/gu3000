@@ -43,9 +43,14 @@ graphicDMAモードにおいてもVFDへの転送はそれなりに時間がか�
 ```
 
 # GU3000GPIO クラス
+```
+gu3000gpio.h
+gu3000gpio.cpp
+```
+gu3000gpio.h
 ## Public関数
 ### void GU3000GPIO::init()
-GPIOのピンを下記デフォルト値で設定します．(gu3000gpio.h)
+GPIOのピンを下記デフォルト値で設定します．
 データバスはData0から8bitの連番に設定されます．
 ```c
 #define VFD_RDY   18                // RDY信号ピン番号
