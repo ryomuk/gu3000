@@ -253,6 +253,19 @@ sudo systemctrl stop showfb.service
 リブートすると，VFDにコンソール画面が表示されます．
 ![](../images/console.jpg)
 
+## コンソール用のフォントについて
+/usr/share/consolefonts にあるフォントはどれも大きいので，
+小さめのフォントデータを作りました．
+ライブラリ用に作ったフォントをテキストファイルに出力してから
+rw-psf(https://github.com/talamus/rw-psf.git )でpsfファイルにするのが
+簡単だったので，そのようにしました．詳細は下記のスクリプトを参照して下さい．
+これで作ったデータが gu3000/src/examples/showfb/consolefonts-extra/*.psf です．
+```
+cd gu3000/src/examples/font2txt
+make
+./makepsf.sh
+```
+
 ## Xwindow
 ### Xorg用設定
 gu3000/src/examples/showfb/xorg.confを/etc/X11/xorg.confにコピー．

@@ -1,5 +1,7 @@
 #!/bin/bash
 
+git clone https://github.com/talamus/rw-psf.git
+
 for i in Noritake6x8 4x6 H68TR MICRlike7x8 MICRlike6x6 16segments ; do
     echo $i
     ./font2txt -f $i > ${i}.txt
