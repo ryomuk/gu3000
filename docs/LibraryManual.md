@@ -43,11 +43,8 @@ graphicDMAモードにおいてもVFDへの転送はそれなりに時間がか�
 ```
 
 # GU3000GPIO クラス
-```
-gu3000gpio.h
-gu3000gpio.cpp
-```
-gu3000gpio.h
+- gu3000gpio.h
+- gu3000gpio.cpp
 ## Public関数
 ### void GU3000GPIO::init()
 GPIOのピンを下記デフォルト値で設定します．
