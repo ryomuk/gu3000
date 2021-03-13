@@ -102,7 +102,7 @@ make
 cd examples
 ./make.sh (もしくは，サブディレクトリでmake)
 ```
-ライブラリの使用方法は，LibraryManual.mdおよびサンプルプログラムのソースを見て下さい．
+ライブラリの使用方法は，[LibraryManual.md](./LibraryManual.md)およびサンプルプログラムのソースをご覧下さい．
 
 ## サンプルプログラム
 サンプルプログラムです．使い方はソースを見て下さい．
@@ -276,7 +276,7 @@ sudo systemctrl stop showfb.service
 /usr/share/consolefonts にあるフォントはどれも大きいので，
 小さめのフォントデータを作りました．
 ライブラリ用に作ったフォントをテキストファイルに出力してから
-rw-psf(https://github.com/talamus/rw-psf )でpsfファイルにするのが
+rw-psf(https://github.com/talamus/rw-psf)でpsfファイルにするのが
 簡単だったので，そのようにしました．詳細は下記のスクリプトを参照して下さい．
 これで作ったデータが gu3000/src/examples/showfb/consolefonts-extra/*.psf です．
 ```
