@@ -59,6 +59,11 @@ GPIOのピンを下記デフォルト値で設定します．
 GPIOのピンを引数に従って設定します．
 
 ### void GU3000GPIO::setBitmapOrder(int order)
+VFDモジュールのピクセルの並びは下記のようになっています．
+(「ディスプレイモジュール3900Bシリーズ"基本機能"ソフトウェア仕様書」
+(5章 グラフィックDMAモード, 5.2節 表示メモリ) 参照)
+アドレスは上から下に増加しますが，1バイト(8ピクセル)中は，MSBが上，LSBが下です．
+
 ```
 VFD hardware pixel mapping is MSB first (why??)
 See software manual (section 5.2(page 63))
@@ -79,6 +84,14 @@ y     0 1 2 3 4 5... 255
    .
    .
 ```
+
+好みの問題かもしれませんが，それは若干気持が悪いので，FrameBufferクラスでは，LSBが上，MSBが下として描画処理を実装しています．
+
+GU3000GPIOクラスではMSB firstかLSB firstを選べるようにしてあり，
+GU3000GPIO::writeByteImage()で，
+VFDへに画像(bitmapimage)の書き込む際に，
+プライベート変数m_bitmaporderの値によって，
+D0〜D7の順か，D7〜D0の順かを切り替えています．
 デフォルトの設定はLSB firstです．
 ```c
 //
