@@ -230,13 +230,15 @@ hdmi_mode=87
 hdmi_force_hotplug=1
 ```
 
-2. dev/fb0 をVFDに逐次表示するコマンド examples/showfb, examples/showfb.sh
+2. コンソール用フォントconsolefonts-extra/*.psf を/usr/share/にコピー．
+3. dev/fb0 をVFDに逐次表示するコマンド examples/showfb, examples/showfb.sh
 を/usr/local/binにコピー．
-それらコマンドをサービスとして起動するための設定．サービスを有効化．
+4. それらコマンドをサービスとして起動するための設定．サービスを有効化．
 
 ```
 cd gu3000/src/examples/showfb
 make
+sudo cp -a consolefonts-extra /usr/share/
 sudo cp showfb /usr/local/bin/
 sudo cp showfb.sh /usr/local/bin/
 sudo cp showfb.service /etc/systemd/system/
