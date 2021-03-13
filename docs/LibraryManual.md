@@ -47,8 +47,7 @@ graphicDMAモードにおいてもVFDへの転送はそれなりに時間がか�
 ### void GU3000GPIO::init()
 GPIOをデフォルト値で初期化します．
 
-gu3000gpio.h  
-```
+```c
 #define VFD_RDY   18                // RDY信号
 #define VFD_WR    19                // WR信号(負論理)
 #define VFD_Data0 20                // データバスはData0から連番で8bit
