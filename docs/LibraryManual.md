@@ -62,6 +62,7 @@ GPIOのピンを引数に従って設定します．
 VFDモジュールのピクセルの並びは下記のようになっています．
 (「ディスプレイモジュール3900Bシリーズ"基本機能"ソフトウェア仕様書」
 5章 グラフィックDMAモード, 5.2節 表示メモリ 参照)
+
 アドレスは上から下に増加しますが，1バイト(8ピクセル)中は，MSBが上，LSBが下です．
 
 ```
@@ -85,13 +86,11 @@ y     0 1 2 3 4 5... 255
    .
 ```
 
-好みの問題かもしれませんが，それは若干気持が悪いので，FrameBufferクラスでは，LSBが上，MSBが下として描画処理を実装しています．
+好みの問題かもしれませんが，これは若干気持が悪いので，FrameBufferクラスではLSBが上，MSBが下として描画処理を実装しています．
 
-GU3000GPIOクラスではMSB firstかLSB firstを選べるようにしてあり，
-GU3000GPIO::writeByteImage()で，
-VFDへに画像(bitmapimage)の書き込む際に，
+GU3000GPIO::writeByteImage()でVFDへに画像(bitmapimage)の書き込む際に，
 プライベート変数m_bitmaporderの値によって，
-D0〜D7の順か，D7〜D0の順かを切り替えています．
+D0〜D7の順かD7〜D0の順かを切り替えています．
 デフォルトの設定はLSB firstです．
 ```c
 //
@@ -103,10 +102,18 @@ D0〜D7の順か，D7〜D0の順かを切り替えています．
 ```
 
 ### void GU3000GPIO::writeByte(byte byteData)
+GPIO経由で1バイト書き込む．
 
 ### void GU3000GPIO::writeByteImage(byte byteData)
+GPIO経由で1バイトのbitmapイメージ(縦8bitx横1bit)を書き込む．
+データがMSB first(上がMSB)かLSB first(上がLSB)かは，
+m_bitmaporder(デフォルト値はLSB first)で設定しておく．
+
+VFD側は上がMSBなので，デフォルトの設定では
+イメージデータはテレコになって書き込まれる．
 
 ### void GU3000GPIO::writeWord(word wordData)
+GPIO経由で1ワード(2バイト)書き込む．
 
 ## private変数
 ###  int m_rdy; // GPIO pinnumber
