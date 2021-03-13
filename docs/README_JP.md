@@ -277,12 +277,13 @@ sudo systemctrl stop showfb.service
 小さめのフォントデータを作りました．
 ライブラリ用に作ったフォントをテキストファイルに出力してから
 rw-psf([https://github.com/talamus/rw-psf](https://github.com/talamus/rw-psf))
-というperlスクリプトでpsfファイルにするのが簡単だったので，
-そのようにしました．詳細は下記のスクリプトを参照して下さい．
+というperlスクリプトでpsfファイルにするのが簡単だったので，そのようにしました．
 これで作ったデータが gu3000/src/examples/showfb/consolefonts-extra/*.psf です．
+詳細はソースとmakepsf.shをご覧下さい．
 ```
 cd gu3000/src/examples/font2txt
 make
+git clone https://github.com/talamus/rw-psf.git
 ./makepsf.sh
 ```
 
