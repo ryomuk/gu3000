@@ -42,7 +42,6 @@ public:
 	    int d0, int d1, int d2, int d3,
 	    int d4, int d5, int d6, int d7); 
   void setBitmapOrder(int order);
-protected:
   void writeByte(byte b);
   void writeByteImage(byte b);
   void writeWord(word w);

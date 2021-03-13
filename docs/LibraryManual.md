@@ -56,14 +56,9 @@ GPIOのピンを下記デフォルト値で設定します．
 ```
 
 ### void GU3000GPIO::init(int rdy, int wr, int d0, int d1, int d2, int d3, int d4, int d5, int d6, int d7)
-GPIOのピンを引数の通り設定します．
+GPIOのピンを引数に従って設定します．
 
 ### void GU3000GPIO::setBitmapOrder(int order)
-
-## Protected関数
-### void GU3000GPIO::writeByte(byte byteData)
-
-### void GU3000GPIO::writeByteImage(byte byteData)
 ```
 VFD hardware pixel mapping is MSB first (why??)
 See software manual (section 5.2(page 63))
@@ -84,6 +79,19 @@ y     0 1 2 3 4 5... 255
    .
    .
 ```
+デフォルトの設定はLSB firstです．
+```c
+//
+// Bit Order of Image Data for writeByteImage()
+//
+#define VFD_MSBFIRST 0
+#define VFD_LSBFIRST 1
+#define VFD_DEFAULT_BITMAPORDER VFD_LSBFIRST
+```
+
+### void GU3000GPIO::writeByte(byte byteData)
+
+### void GU3000GPIO::writeByteImage(byte byteData)
 
 ### void GU3000GPIO::writeWord(word wordData)
 

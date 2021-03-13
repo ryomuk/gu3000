@@ -319,11 +319,9 @@ startx
 DIPスイッチの切り替えが必要なのと，通信オーバヘッドが大きく遅いので，
 対応するライブラリは途中まで作成して放置してあります．
 
-```
-gu3000normal.cpp
-gu3000normal.h
-examples.normalmode/
-```
+- gu3000normal.cpp
+- gu3000normal.h
+- examples.normalmode/
 
 ### ノーマルコマンド使用方法
 コマンドモード選択(SW1 No.6): OFF ノーマルコマンドモードに設定します．
