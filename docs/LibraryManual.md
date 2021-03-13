@@ -1,9 +1,17 @@
-書きかけドラフト(2021/3/12版)
+書きかけドラフト(2021/3/13版)
 
 
-# グラフィックDMAモード用ライブラリリファレンスマニュアル
+# グラフィックDMAモード用ライブラリ リファレンスマニュアル
+GU3000Graphicクラス(VFDクラス)は，
+描画機能を司るFrameBufferクラスと，ハードウェア(GPIO)を制御するGU3000GPIOクラスを継承して作られています．
+VFDクラスはGU3000Graphicクラスと同一のもの(typedefで定義)です．
+本マニュアルでは，それぞれのクラスとそれらの関数(メソッド)について説明します．
+```
+class GU3000Graphic : public FrameBuffer, private GU3000GPIO
+typedef GU3000Graphic VFD;
+```
+
 # 概念図
-
 描画はFrameBufferのbuf上に行われます．
 buf[]はVFD::show()によってVFDの表示メモリ(display_memory[])に転送されます．
 VFDに送られた内容はm_buf[]にもコピーされます．
