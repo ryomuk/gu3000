@@ -176,7 +176,7 @@ WIDTH * HEIGHT / 8 です．ループで出てくることが多い値なので�
 ###  void fill(byte b);
 ###  void clear();
 
-## privage変数
+## private変数
 ###  int m_ybytes; // = HEIGHT / 8
 ###  byte *m_font_bitmap;
 ###  int m_font_width;
