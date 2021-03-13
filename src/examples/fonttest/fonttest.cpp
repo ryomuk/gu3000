@@ -2,25 +2,11 @@
 #include <stdlib.h>
 #include <gu3000graphic.h>
 
-#define MAXBUFSIZE 4096
+#define MAXBUFSIZE 1024
 
 int main(int argc, char *argv[]){
   VFD vfd;
-  FILE *fp;
-  //  char *line = NULL;
-  //  size_t len;
-  //  ssize_t n_read;
   char linebuf[MAXBUFSIZE];
-
-  if(argc <= 1){
-    fp = stdin;
-  } else {
-    char *infile = argv[1];
-    if((fp = fopen(infile, "r")) == NULL){
-      fprintf(stderr, "%s: Cannot open file '%s'\n", argv[0], infile);
-      exit(1);
-    }
-  }
   
   for(int i = 0; vfd.fontList[i] != NULL; i++){
     Font *font = vfd.fontList[i];

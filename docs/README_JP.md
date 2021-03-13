@@ -1,4 +1,3 @@
-
 # Noritake Itron GU3000シリーズ VFDモジュール用Raspberry Piパラレルインターフェース説明書
 ## Rev. 2021/3/11
 この文書は，Noritake Itron GU3000シリーズ VFDモジュール用に作成したインターフェースについて説明するものです．
@@ -105,6 +104,17 @@ cd examples
 ```
 
 ## サンプルプログラム
+サンプルプログラムです．使い方はソースを見て下さい．
+
+### hello
+とりあえず最小のサンプルプログラム．
+```
+cd gu3000/src/examples/hello
+make
+./hello
+```
+![](../images/hello.jpg)
+
 ### test
 簡単な描画と速度の測定．
 ```
@@ -183,6 +193,10 @@ make
 cd gu3000/src/examples/viewtxt
 make
 ./viewtxt sample.txt
+```
+フォントの名前一覧を表示
+```
+./viewtxt -l
 ```
 ![](../images/viewtxt.jpg)
 
