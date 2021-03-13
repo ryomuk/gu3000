@@ -45,8 +45,7 @@ graphicDMAモードにおいてもVFDへの転送はそれなりに時間がか�
 # GU3000GPIO クラス
 ## Public関数
 ### void GU3000GPIO::init()
-GPIOをデフォルト値で初期化します．
-
+GPIOを下記デフォルト値で初期化します．(../src/gu3000gpio.h)
 ```c
 #define VFD_RDY   18                // RDY信号
 #define VFD_WR    19                // WR信号(負論理)
