@@ -257,7 +257,7 @@ sudo systemctrl stop showfb.service
 /usr/share/consolefonts にあるフォントはどれも大きいので，
 小さめのフォントデータを作りました．
 ライブラリ用に作ったフォントをテキストファイルに出力してから
-rw-psf(https://github.com/talamus/rw-psf.git )でpsfファイルにするのが
+rw-psf(https://github.com/talamus/rw-psf )でpsfファイルにするのが
 簡単だったので，そのようにしました．詳細は下記のスクリプトを参照して下さい．
 これで作ったデータが gu3000/src/examples/showfb/consolefonts-extra/*.psf です．
 ```
