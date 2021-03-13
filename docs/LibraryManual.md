@@ -13,7 +13,7 @@ typedef GU3000Graphic VFD;
 
 # 概念図
 描画はFrameBufferのbuf上に行われます．
-buf[]はVFD::show()によってVFDの表示メモリ(display_memory[])に転送されます．
+buf[]はshow()メソッドによってVFDの表示メモリ(display_memory[])に転送されます．
 VFDに送られた内容はm_buf[]にもコピーされます．
 
 graphicDMAモードにおいてもVFDへの転送はそれなりに時間がかかるので，
@@ -45,8 +45,15 @@ graphicDMAモードにおいてもVFDへの転送はそれなりに時間がか�
 # GU3000GPIO クラス
 ## Public関数
 ### void GU3000GPIO::init()
+GPIOをデフォルト値で初期化します．
+```gu3000gpio.h
+#define VFD_RDY   18                // <- VFD
+#define VFD_WR    19                // -> VFD (Active Low)
+#define VFD_Data0 20                // -> VFD
+```
 
 ### void GU3000GPIO::init(int rdy, int wr, int d0, int d1, int d2, int d3, int d4, int d5, int d6, int d7)
+GPIOを引数で初期化します．
 
 ### void GU3000GPIO::setBitmapOrder(int order)
 
