@@ -1,7 +1,7 @@
 書きかけドラフト(2021/3/13版)
 
 
-# グラフィックDMAモード用ライブラリ リファレンスマニュアル
+# GU3000Graphicクラス(グラフィックDMAモード用ライブラリ)リファレンスマニュアル
 GU3000Graphicクラス(VFDクラス)は，
 描画機能を司るFrameBufferクラスと，ハードウェア(GPIO)を制御するGU3000GPIOクラスを継承して作られています．
 VFDクラスはGU3000Graphicクラスと同一のもの(typedefで定義)です．
@@ -123,8 +123,23 @@ GPIO経由で1ワード(2バイト)書き込む．
 
 ## private関数
 ###  inline void waitRDY()
+VFDモジュールからのRDY信号がアクティブになるのを待ちます．
+通常の待ち時間はマイクロ秒レベルなので，
+割り込み等ではなくひたすらポーリングするループです．
+モジュールがつながっていないとここで止まってしまうので，
+その場合はVFD_DEGUB_IGNORE_RDYを#defineしてコンパイルします．
+(RDYをプルアップしておけばいいのかも．)
+```c
+inline void waitRDY(){
+#ifndef VFD_DEGUB_IGNORE_RDY
+    while(!digitalRead(m_rdy)){
+    }
+#endif
+```
 
 # FrameBufferクラス
+簡易的な描画機能を提供するクラスです．
+
 ## 座標系
 左上が原点です．回転は実装していません．
 ```
@@ -147,7 +162,11 @@ MycroPythonのframebufにも'MONO_VMSB'は無かったので．
 でもなぜかffmpegのrawvideoはMSB firstのようです．
 
 ### int WIDTH
+フレームバッファの幅．
+
 ### int HEIGHT
+フレームバッファの高さ．
+
 ### int bufsize
 WIDTH * HEIGHT / 8 です．ループで出てくることが多い値なので，個別の変数にしています．
 
@@ -164,17 +183,55 @@ WIDTH * HEIGHT / 8 です．ループで出てくることが多い値なので�
 ライブラリ内蔵フォントのリスト．
 
 ## Public関数
-### void FrameBuffer::init(int x, int y)
+### void FrameBuffer::init(int width, int height)
+WIDTH = x, HEIGHT = yで初期化．bufを確保します．
+フォントをデフォルト(g_DefaultFont)に設定します．
 
 ### void FrameBuffer::setCursor(int x, int y)
+文字描画用のカーソル位置(文字の左上)を(x, y)に設定します．
 
-### int FrameBuffer::getPixel(int x, int y)
-
-#### FrameBuffer::getPixelMSBfirst(int x, int y)
-
-### void FrameBuffer::drawPixel(int x, int y, int pen)
 ###  void fill(byte b);
 ###  void clear();
+
+###  inline void pset(int x, int y){ // fast but without parameter domain check
+    buf[x*m_ybytes + (y / 8)] |= bit(y & 7);
+  };
+###  inline void preset(int x, int y){ // fast but without parameter domain check
+    buf[x*m_ybytes + (y / 8)] &= ~bit(y & 7);
+  };
+###  int getPixel(int x, int y);
+###  int getPixelMSBfirst(int x, int y);
+###  void drawPixel(int x, int y, int pen);
+###  void drawLine(int x0, int y0, int x1, int y1, int pen);
+###  void drawBox(int x0, int y0, int x1, int y1, int pen);
+###  void drawBoxFill(int x0, int y0, int x1, int y1, int pen);
+###  void drawBitmap(int x, int y, const byte *bitmap, int width, int height);
+  //
+  // methods for drawing characters
+  //
+###  void putchar(int c);
+###  void puts(const char *s);
+###  void drawChar(int x, int y, byte c);
+###  void setCursor(int x, int y);
+###  void scrollByte();
+###  void setTabstop(int n);
+  //
+  // methods for fonts
+  //
+###  void setFont(Font *font);
+###  void setFontByName(const char *fontname);
+###  Font *getFontByName(const char *fontname);
+###  void setFontDefault(); // set font to default font
+###  void setFontProportional();
+###  void setFontFixedWidth();
+###  void invertFontBitmapOrder(); // for use with setBitmapOrder(VFD_MSBFIRST)
+  //
+  // methods for mapping different format bitmaps
+  //
+###  void loadBitmapHLSB(byte *bmp, int width, int height);
+###  void loadBitmapBMP(byte *bmp, int width, int height);
+###  void loadBitmapBytePerPixel(byte *bmp, int width, int height);
+
 
 ## private変数
 ###  int m_ybytes; // = HEIGHT / 8

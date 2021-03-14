@@ -14,9 +14,9 @@
 #include <string.h>
 #include "framebuffer.h"
 
-void FrameBuffer::init(int x, int y){
-  WIDTH = x;
-  HEIGHT = y;
+void FrameBuffer::init(int width, int height){
+  WIDTH = width;
+  HEIGHT = height;
 
   m_ybytes = HEIGHT / 8;
   if(HEIGHT & 7){
