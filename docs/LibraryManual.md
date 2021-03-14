@@ -120,6 +120,7 @@ y     0 1 2 3 4 5... 255
 ```
 
 好みの問題かもしれませんが，これは若干気持が悪いので，FrameBufferクラスではLSBが上，MSBが下として描画処理を実装しています．
+ビットマップ画像もこの格納方法に従います．
 
 GU3000GPIO::writeByteImage()でVFDへに画像(bitmapimage)の書き込む際に，
 プライベート変数m_bitmaporderの値によって，
@@ -227,37 +228,76 @@ WIDTH * HEIGHT / 8 です．ループで出てくることが多い値なので�
 WIDTH = x, HEIGHT = yで初期化．bufを確保します．
 フォントをデフォルト(g_DefaultFont)に設定します．
 
-### void FrameBuffer::setCursor(int x, int y)
+## Public関数(描画関連)
+###  void fill(byte c)
+buf[0..bufsize]をcで埋めます．
+
+###  void FrameBuffer::clear() (== GU3000Graphic::clearFrameBuffer())
+bufをゼロクリアして，カーソル位置を(0,0)にします．
+GU3000Graphicクラスでは，clearFrameBuffer() で呼びます．
+(参考: 
+GU3000Graphic::clear()はフレームバッファのクリアに加えて，
+VFDモジュールの表示メモリもクリアします．)
+
+###  inline void pset(int x, int y)
+(x, y)にピクセルを描画します．
+高速にするために，定義域のエラーチェックをしていないことに注意．
+
+###  inline void preset(int x, int y)
+(x, y)のピクセルを消します．
+高速にするために，定義域のエラーチェックをしていないことに注意．
+
+###  int getPixel(int x, int y);
+(x, y)のピクセル値を返します．
+ピクセルが無ければ0, ピクセルがあれば，(1<<(y&7))を返します．
+(x, y)がフレームバッファの範囲外の場合は0を返します．
+
+###  int getPixelMSBfirst(int x, int y);
+各バイトがMSB first(MSBが上)の場合の(x, y)のピクセル値を返します．
+ピクセルが無ければ0, ピクセルがあれば，(1<<(7-(y&7)))を返します．
+(x, y)がフレームバッファの範囲外の場合は0を返します．
+
+###  void drawPixel(int x, int y, int pen);
+(x, y)のピクセルを描画/消去します．(pen!=0: 描画, pen==0: 消去)
+(x, y)がフレームバッファの範囲外の場合は何もしません．
+
+###  void drawLine(int x0, int y0, int x1, int y1, int pen);
+(x0, y0)から(x1, y1)までの線を描画/消去します．(pen!=0: 描画, pen==0: 消去)
+
+###  void drawBox(int x0, int y0, int x1, int y1, int pen);
+四角形(辺だけ)を描画，消去します．(pen!=0: 描画, pen==0: 消去)
+
+###  void drawBoxFill(int x0, int y0, int x1, int y1, int pen);
+四角形(内部塗りつぶし)を描画，消去します．(pen!=0: 描画, pen==0: 消去)
+
+###  void drawBitmap(int x, int y, const byte *bitmap, int width, int height);
+座標(x, y)から(x+width-1, y+height-1)を対角線とする矩形エリアに，
+幅width, 高さheightのビットマップ画像を描画します．
+
+## Public関数(文字描画関連)
+###  void putchar(int c);
+現カーソル位置に文字を描画してカーソルを進めます．
+描画スペースが無い場合はスクロールします．
+
+###  void puts(const char *s);
+現カーソル位置に文字列を描画してカーソルを進めます．
+描画スペースが無い場合はスクロールします．
+
+###  void drawChar(int x, int y, byte c);
+座標(x, y)に文字を描画します．カーソル位置は変えません．
+
+###  void setCursor(int x, int y);
 文字描画用のカーソル位置(文字の左上)を(x, y)に設定します．
 
-###  void fill(byte b);
-###  void clear();
-
-###  inline void pset(int x, int y){ // fast but without parameter domain check
-    buf[x*m_ybytes + (y / 8)] |= bit(y & 7);
-  };
-###  inline void preset(int x, int y){ // fast but without parameter domain check
-    buf[x*m_ybytes + (y / 8)] &= ~bit(y & 7);
-  };
-###  int getPixel(int x, int y);
-###  int getPixelMSBfirst(int x, int y);
-###  void drawPixel(int x, int y, int pen);
-###  void drawLine(int x0, int y0, int x1, int y1, int pen);
-###  void drawBox(int x0, int y0, int x1, int y1, int pen);
-###  void drawBoxFill(int x0, int y0, int x1, int y1, int pen);
-###  void drawBitmap(int x, int y, const byte *bitmap, int width, int height);
-  //
-  // methods for drawing characters
-  //
-###  void putchar(int c);
-###  void puts(const char *s);
-###  void drawChar(int x, int y, byte c);
-###  void setCursor(int x, int y);
 ###  void scrollByte();
+1バイト(8ピクセル)分，上にスクロールします．
+
 ###  void setTabstop(int n);
-  //
-  // methods for fonts
-  //
+タブストップの位置をnの倍数文字目に設定します．
+
+## Public関数(フォント関連))
+****************************************
+
 ###  void setFont(Font *font);
 ###  void setFontByName(const char *fontname);
 ###  Font *getFontByName(const char *fontname);
@@ -294,6 +334,24 @@ WIDTH = x, HEIGHT = yで初期化．bufを確保します．
 ###  void writeFastHline(int x, int y, int hlength, int pen);
 ###  int bitmapContentWidth(const byte *bitmap, int width, int height);
 ###  const byte *bitmapContentTop(const byte *bitmap, int width, int height);
+
+## フォント型
+```c
+typedef struct {
+  const byte *bitmap; // VLSB (Vertical direction LSB first bitmap)
+  const char *name;   // for FrameBuffer::{set/get}FontByName()
+  int width;
+  int height;
+  int xspace;
+  int yspace;
+  int firstcode;
+  int lastcode;
+} Font;
+```
+
+## フォント関連グローバル変数
+### extern Font *g_DefaultFont;
+### extern Font *g_FontList[];
 
 ## GU3000Graphicクラス
 GU3000Graphicクラスは，
