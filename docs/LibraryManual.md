@@ -3,13 +3,45 @@
 
 # GU3000Graphicクラス(グラフィックDMAモード用ライブラリ)リファレンスマニュアル
 GU3000Graphicクラス(VFDクラス)は，
-描画機能を司るFrameBufferクラスと，ハードウェア(GPIO)を制御するGU3000GPIOクラスを継承して作られています．
+描画機能を提供するFrameBufferクラスと，ハードウェア(GPIO)を制御するGU3000GPIOクラスを継承して作られています．
 VFDクラスはGU3000Graphicクラスと同一のもの(typedefで定義)です．
 本マニュアルでは，それぞれのクラスとそれらの関数(メソッド)について説明します．
 ```
 class GU3000Graphic : public FrameBuffer, private GU3000GPIO
 typedef GU3000Graphic VFD;
 ```
+
+# ライブラリビルド方法
+```
+git clone https://github.com/ryomuk/gu3000.git
+cd gu3000/src
+make
+```
+これで，静的ライブラリ gu3000.a が出来ます．
+
+# ユーザプログラムの例
+gu3000graphic.hをインクルードして下さい．
+
+プログラム例 hello.cpp
+```c
+#include <gu3000graphic.h>
+
+int main(){
+  VFD vfd;
+  vfd.puts("Hello World!");
+  vfd.show();
+}
+```
+
+# リンク方法
+wiringPi，およびgu3000.aをリンクして下さい．
+直接コンパイルのコマンドを入力する場合は，下記の例のようにします．
+```
+cd gu3000/src/examples/hello
+g++ -c hello.cpp -I../..
+g++ -o hello hello.o ../../gu3000.a -lwiringPi -I../..
+```
+ライブラリやinclude用のパスは，Makefile等で適宜設定して下さい．
 
 # 概念図
 描画はFrameBufferのbuf上に行われます．
@@ -43,6 +75,7 @@ graphicDMAモードにおいてもVFDへの転送はそれなりに時間がか�
 ```
 
 # GU3000GPIO クラス
+## ソースファイル
 - gu3000gpio.h
 - gu3000gpio.cpp
 ## Public関数
@@ -139,6 +172,13 @@ inline void waitRDY(){
 
 # FrameBufferクラス
 簡易的な描画機能を提供するクラスです．
+
+## ソースファイル
+- framebuffer.h
+- framebuffer.cpp
+- font.h
+- font.cpp
+- fonts/*.h
 
 ## 座標系
 左上が原点です．回転は実装していません．
@@ -259,6 +299,10 @@ WIDTH = x, HEIGHT = yで初期化．bufを確保します．
 GU3000Graphicクラスは，
 FrameBufferクラスをpublicで，GU3000GPIOクラスをprivateで継承したクラスです．
 グラフィックDMAモードのVFDにFrameBufferの内容を表示する機能を実装しています．
+
+## ソースファイル
+- gu3000graphic.h
+- gu3000graphic.cpp
 
 ## Public変数
 ### int xsize
