@@ -16,8 +16,9 @@ typedef struct {
   int lastcode;
 } Font;
 
-extern Font *g_DefaultFont;
 extern Font *g_FontList[];
+
+#define FONT_DEFAULT_FONTNAME "Noritake6x8"
 
 // width of the ' '(space char) in proportional font
 //

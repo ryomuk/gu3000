@@ -33,8 +33,7 @@ void FrameBuffer::init(int width, int height){
 
   clear(); // fill buffer with 0 and set cursor to (0,0)
   fontList = g_FontList;
-  setFont(g_DefaultFont);
-  setFontFixedWidth();
+  setFontDefault();
   setTabstop(FRAMEBUFFER_DEFAULT_TABSTOP);
 }
 
@@ -234,7 +233,6 @@ void FrameBuffer::setFont(Font *f){
   m_font_yspace = font->yspace;
   m_font_firstcode = font->firstcode;
   m_font_lastcode = font->lastcode;
-  m_font_num_chars = font->lastcode - font->firstcode + 1;
   
   m_font_bytes = font->height / 8;
   if(font->height & 7){
@@ -269,11 +267,12 @@ Font *FrameBuffer::getFontByName(const char *fontname){
 }
 
 void FrameBuffer::setFontDefault(){
-  setFont(g_DefaultFont);
+  setFontByName(FONT_DEFAULT_FONTNAME);
   setFontFixedWidth();
 }
 
 void FrameBuffer::setFontProportional(){
+  int num_chars = font->lastcode - font->firstcode + 1;
   m_font_proportional = true;
   if(m_font_xspace < 1){
     m_font_xspace = 1;
@@ -281,9 +280,9 @@ void FrameBuffer::setFontProportional(){
   
   m_pfont_bitmap_ptr =
     (const byte **) realloc(m_pfont_bitmap_ptr,
-			   m_font_num_chars * sizeof(const byte *));
+			    num_chars * sizeof(const byte *));
   m_pfont_width =
-    (int *) realloc(m_pfont_width,  m_font_num_chars * sizeof(int));
+    (int *) realloc(m_pfont_width, num_chars * sizeof(int));
 
   if(m_pfont_bitmap_ptr == NULL){
     fprintf(stderr, "cannot allocate memory for m_pfont_bitmap_ptr\n");
@@ -293,7 +292,7 @@ void FrameBuffer::setFontProportional(){
     fprintf(stderr, "cannot allocate memory for m_pfont_width\n");
     exit(1);
   }
-  for(int i = 0; i < m_font_num_chars; i++){
+  for(int i = 0; i < num_chars; i++){
     m_pfont_bitmap_ptr[i] = bitmapContentTop(&(m_font_bitmap[i*m_font_bytes]),
 					     m_font_width, m_font_height);
     
@@ -326,10 +325,11 @@ static byte swapbit8(byte x){
 
 void FrameBuffer::invertFontBitmapOrder(){
   byte *f = m_font_bitmap;
+  int num_chars = font->lastcode - font->firstcode + 1;
 
-  m_font_bitmap = (byte *)malloc(m_font_num_chars * m_font_bytes);
+  m_font_bitmap = (byte *)malloc(num_chars * m_font_bytes);
 
-  for(int i = 0; i < m_font_num_chars * m_font_bytes; i++){
+  for(int i = 0; i < num_chars * m_font_bytes; i++){
     m_font_bitmap[i] = swapbit8(f[i]);
   }
 }

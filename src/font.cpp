@@ -16,8 +16,6 @@
 #include "fonts/TK80BS_KANA_font.h"
 #include "fonts/TK80BS_GREEK_font.h"
 
-Font *g_DefaultFont = &font_Noritake6x8;
-
 Font *g_FontList[] = {
 		      &font_Noritake6x8,
 		      &font_TK80BS_JIS,

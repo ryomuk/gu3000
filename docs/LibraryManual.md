@@ -1,4 +1,4 @@
-書きかけドラフト(2021/3/13版)
+書きかけドラフト(2021/3/15版)
 
 
 # GU3000Graphicクラス(グラフィックDMAモード用ライブラリ)リファレンスマニュアル
@@ -150,10 +150,17 @@ VFD側は上がMSBなので，デフォルトの設定では
 GPIO経由で1ワード(2バイト)書き込む．
 
 ## private変数
-###  int m_rdy; // GPIO pinnumber
-###  int m_wr;  // GPIO pinnumber
-###  int m_d0, m_d1, m_d2, m_d3, m_d4, m_d5, m_d6, m_d7;  // GPIO pinnumber
-###  int m_bitmapOrder; // Bit Order of Image Data
+###  int m_rdy
+RDY信号(入力)のGPIOピン番号です．
+
+###  int m_wr
+WR信号(出力, 負論理)のGPIOピン番号です．
+
+###  int m_d0, m_d1, m_d2, m_d3, m_d4, m_d5, m_d6, m_d7
+Data0〜Data7(出力)のGPIOピン番号です．
+
+###  int m_bitmapOrder
+ビットマップがLSB firstかMSB firstかを指定するための変数です．
 
 ## private関数
 ###  inline void waitRDY()
@@ -247,111 +254,177 @@ VFDモジュールの表示メモリもクリアします．)
 (x, y)のピクセルを消します．
 高速にするために，定義域のエラーチェックをしていないことに注意．
 
-###  int getPixel(int x, int y);
+###  int getPixel(int x, int y)
 (x, y)のピクセル値を返します．
 ピクセルが無ければ0, ピクセルがあれば，(1<<(y&7))を返します．
 (x, y)がフレームバッファの範囲外の場合は0を返します．
 
-###  int getPixelMSBfirst(int x, int y);
+###  int getPixelMSBfirst(int x, int y)
 各バイトがMSB first(MSBが上)の場合の(x, y)のピクセル値を返します．
 ピクセルが無ければ0, ピクセルがあれば，(1<<(7-(y&7)))を返します．
 (x, y)がフレームバッファの範囲外の場合は0を返します．
 
-###  void drawPixel(int x, int y, int pen);
+###  void drawPixel(int x, int y, int pen)
 (x, y)のピクセルを描画/消去します．(pen!=0: 描画, pen==0: 消去)
 (x, y)がフレームバッファの範囲外の場合は何もしません．
 
-###  void drawLine(int x0, int y0, int x1, int y1, int pen);
+###  void drawLine(int x0, int y0, int x1, int y1, int pen)
 (x0, y0)から(x1, y1)までの線を描画/消去します．(pen!=0: 描画, pen==0: 消去)
+水平線はwriteFastHline，垂直線はwriteFastVline,
+それ以外はwriteLineにディスパッチしています．
 
-###  void drawBox(int x0, int y0, int x1, int y1, int pen);
+###  void drawBox(int x0, int y0, int x1, int y1, int pen)
 四角形(辺だけ)を描画，消去します．(pen!=0: 描画, pen==0: 消去)
 
-###  void drawBoxFill(int x0, int y0, int x1, int y1, int pen);
+###  void drawBoxFill(int x0, int y0, int x1, int y1, int pen)
 四角形(内部塗りつぶし)を描画，消去します．(pen!=0: 描画, pen==0: 消去)
 
-###  void drawBitmap(int x, int y, const byte *bitmap, int width, int height);
+###  void drawBitmap(int x, int y, const byte *bitmap, int width, int height)
 座標(x, y)から(x+width-1, y+height-1)を対角線とする矩形エリアに，
 幅width, 高さheightのビットマップ画像を描画します．
 
 ## Public関数(文字描画関連)
-###  void putchar(int c);
+###  void putchar(int c)
 現カーソル位置に文字を描画してカーソルを進めます．
 描画スペースが無い場合はスクロールします．
 
-###  void puts(const char *s);
+###  void puts(const char *s)
 現カーソル位置に文字列を描画してカーソルを進めます．
 描画スペースが無い場合はスクロールします．
 
-###  void drawChar(int x, int y, byte c);
+###  void drawChar(int x, int y, byte c)
 座標(x, y)に文字を描画します．カーソル位置は変えません．
 
-###  void setCursor(int x, int y);
+###  void setCursor(int x, int y)
 文字描画用のカーソル位置(文字の左上)を(x, y)に設定します．
 
-###  void scrollByte();
+###  void scrollByte()
 1バイト(8ピクセル)分，上にスクロールします．
 
-###  void setTabstop(int n);
+###  void setTabstop(int n)
 タブストップの位置をnの倍数文字目に設定します．
 
-## Public関数(フォント関連))
-****************************************
+## Public関数(フォント関連)
+###  void setFont(Font *font)
+文字描画用のフォントをフォントデータへのポインタで設定する．
+フォントデータの実体はfonts/*.hに記載されており，
+font.cppがインクルードし，Font *型のグローバル変数(定数)になっています．
 
-###  void setFont(Font *font);
-###  void setFontByName(const char *fontname);
-###  Font *getFontByName(const char *fontname);
-###  void setFontDefault(); // set font to default font
-###  void setFontProportional();
-###  void setFontFixedWidth();
-###  void invertFontBitmapOrder(); // for use with setBitmapOrder(VFD_MSBFIRST)
-  //
-  // methods for mapping different format bitmaps
-  //
-###  void loadBitmapHLSB(byte *bmp, int width, int height);
-###  void loadBitmapBMP(byte *bmp, int width, int height);
-###  void loadBitmapBytePerPixel(byte *bmp, int width, int height);
+###  void setFontByName(const char *fontname)
+文字描画用のフォントをフォント名で設定する．
 
+###  Font *getFontByName(const char *fontname)
+フォント名を引数とし，フォントデータへのポインタを返します．
+
+###  void setFontDefault()
+デフォルトのフォントを描画用に設定します．下記と等価です．
+```cい
+setFontByName(FONT_DEFAULT_FONTNAME)
+```
+デフォルト値は下記の通りです．(font.hに記載)
+```c
+#define FONT_DEFAULT_FONTNAME "Noritake6x8"
+```
+
+###  void setFontProportional()
+現在設定されているフォントを元に，
+プロポーショナルフォントで描画するため
+のフォントビットマップテーブル(*m_pfont_bitmap_ptr[])と，
+文字幅のテーブル(m_pfont_width[])を作成します．
+
+###  void setFontFixedWidth()
+文字描画を固定幅フォントで描画するように設定します．
+
+###  void invertFontBitmapOrder()
+setBitmapOrder(VFD_MSBFIRST)に設定した場合の文字描画用にフォントデータを変換します．
+
+## Public関数(全画面ビットマップ描画関連)
+###  void loadBitmapHLSB(byte *bmp, int width, int height)
+水平方向でLSB firstのビットマップ画像をbufに読み込みます．
+
+###  void loadBitmapBMP(byte *bmp, int width, int height)
+BMPファイル形式のコンテンツのビットマップ画像をbufに読み込みます．
+
+###  void loadBitmapBytePerPixel(byte *bmp, int width, int height)
+1byte/pixelのビットマップ画像をbufに読み込みます．
 
 ## private変数
-###  int m_ybytes; // = HEIGHT / 8
-###  byte *m_font_bitmap;
-###  int m_font_width;
-###  int m_font_height;
-###  int m_font_xspace;
-###  int m_font_yspace;
-###  byte m_font_firstcode;
-###  byte m_font_lastcode;
-###  int m_font_num_chars;
-###  int m_font_bytes;
-###  int m_font_proportional = false;
-###  const byte **m_pfont_bitmap_ptr = NULL;
-###  int *m_pfont_width = NULL;
+###  int m_ybytes
+m_ybytes = HEIGHT / 8 です．出現頻度が多いので，専用の変数にしています．
+
+###  byte *m_font_bitmap
+現在のフォントのビットマップデータへのポインタです．
+
+###  int m_font_width
+現在のフォントの幅です．
+
+###  int m_font_height
+現在のフォントの高さです．
+
+###  int m_font_xspace
+フォント描画時のx方向の余白です．
+
+###  int m_font_yspace
+フォント描画時のy方向の余白です．
+
+###  byte m_font_firstcode
+現在のフォントの先頭コードの値です．
+
+###  byte m_font_lastcode
+現在のフォントの末尾コードの値です．
+
+###  int m_font_bytes
+フォントのbitmapの1文字あたりのバイト数です．
+
+###  int m_font_proportional
+文字の描画をプロポーショナルにするか固定幅にするかのフラグです．
+(false: 固定幅, true: プロポーショナル)
+
+###  const byte **m_pfont_bitmap_ptr
+setFontPropotional()が生成する，
+プロポーショナルフォント用のビットマップデータのテーブルです．
+
+###  int *m_pfont_width
+setFontPropotional()が生成する，
+プロポーショナルフォントの各文字の幅のテーブルです．
 
 ## private関数
 ###  void writeLine(int x0, int y0, int x1, int y1, int pen);
+(x0, y0)から(x1, y1)までの線を描画します．
+drawLineから呼ばれます．
+
 ###  void writeFastVline(int x, int y, int vlength, int pen);
+(x, y)から長さvlengthの垂直線を描画します．
+
 ###  void writeFastHline(int x, int y, int hlength, int pen);
+(x, y)から長さhlengthの水平線を描画します．
+
 ###  int bitmapContentWidth(const byte *bitmap, int width, int height);
+ビットマップ画像の空白ではない部分の幅を返します．
+setFontProportional()で，プロポーショナルフォントの文字幅テーブルを作成するための関数です．
+
 ###  const byte *bitmapContentTop(const byte *bitmap, int width, int height);
+ビットマップ画像の空白ではない部分のy座標(最左が0)を返します．
+setFontProportional()で，プロポーショナルフォントのビットマップデータテーブルを作成するための関数です．
 
 ## フォント型
 ```c
 typedef struct {
-  const byte *bitmap; // VLSB (Vertical direction LSB first bitmap)
-  const char *name;   // for FrameBuffer::{set/get}FontByName()
-  int width;
-  int height;
-  int xspace;
-  int yspace;
-  int firstcode;
-  int lastcode;
+  const byte *bitmap; // VLSB(垂直方向, LSB first)のビットマップデータ
+  const char *name;   // getFontByName(), setFontByName() で使われる名前
+  int width;          // 文字の幅
+  int height;         // 文字の高さ
+  int xspace;         // x方向の余白
+  int yspace;         // y方向の余白
+  int firstcode;      // 最初の文字コード
+  int lastcode;       // 最後の文字コード
 } Font;
 ```
 
 ## フォント関連グローバル変数
-### extern Font *g_DefaultFont;
 ### extern Font *g_FontList[];
+フォントデータのリストです．font.cppで，
+fonts/*.h に記述されたフォントデータの実体を列挙して定義されます．
 
 ## GU3000Graphicクラス
 GU3000Graphicクラスは，
@@ -363,6 +436,8 @@ FrameBufferクラスをpublicで，GU3000GPIOクラスをprivateで継承した�
 - gu3000graphic.cpp
 
 ## Public変数
+*********************************************
+
 ### int xsize
 ### int ysize
 

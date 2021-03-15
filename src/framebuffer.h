@@ -99,12 +99,11 @@ private:
   byte m_font_firstcode;
   byte m_font_lastcode;
   //
-  int m_font_num_chars;
   int m_font_bytes;
   //
   // for proportional font
   //
-  int m_font_proportional = false;
+  bool m_font_proportional = false;
   const byte **m_pfont_bitmap_ptr = NULL;
   const byte *bitmapContentTop(const byte *bitmap, int width, int height);
   int *m_pfont_width = NULL;
