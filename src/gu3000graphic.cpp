@@ -5,7 +5,7 @@
 #include <stdlib.h>
 #include "gu3000graphic.h"
 
-void GU3000Graphic::init(int x, int y, int memsize){
+void GU3000Graphic::init(int x, int y, int memsize, word DAD){
   xsize = x;
   ysize = y;
   m_disp_memsize  = memsize;
@@ -15,14 +15,17 @@ void GU3000Graphic::init(int x, int y, int memsize){
 
   m_buf = (byte *)realloc(m_buf, m_disp_memsize);
   m_first_show = true;
+
+  setDAD(DAD);
+
   flushCommandData(); // Flush last incompleted command (ex. copy large bitmap)
   setDisplayStartAddress(0);
   setBrightness(VFD_BRIGHTNESS_MID);
 
 }
 
-void GU3000Graphic::setDAD(word displayAddress){
-  m_dad = displayAddress;
+void GU3000Graphic::setDAD(word DAD){
+  m_dad = DAD;
 }
 
 void GU3000Graphic::setBitmapOrder(int order)

@@ -436,20 +436,32 @@ FrameBufferクラスをpublicで，GU3000GPIOクラスをprivateで継承した�
 - gu3000graphic.cpp
 
 ## Public変数
-*********************************************
-
 ### int xsize
+VFDモジュールのx方向(横)のドット数です．
 ### int ysize
+VFDモジュールのy方向(縦)のドット数です．
 
 ## Public関数
 ###  void init()
-{
-   init(VFD_Xdots, VFD_Ydots, VFD_DispMemSize);
-};
-### void init(int x, int y, int memsize);
-###   void setDAD(word displayAddress); // displayAddress(for multiple VFD);
-###   void setBitmapOrder(int order);
+デフォルト値で初期化します．
+```
+   init(VFD_Xdots, VFD_Ydots, VFD_DispMemSize, VFD_DAD_BROADCAST);
+```
+### void init(int x, int y, int memsize, DAD);
+引数に従って初期化します．
+- x: x方向(横)ドット数
+- y: y方向(縦)ドット数
+- memsize: VFDモジュールの総バッファサイズ(表示エリア+非表示エリア)
+- DAD: VFDモジュールのアドレス(マニュアルでDADと呼ばれているもの)
 
+###   void setDAD(word displayAddress); // displayAddress(for multiple VFD);
+VFDモジュールのアドレス(マニュアルでDADと呼ばれているもの)を設定します．
+ブロードキャストの場合は0xffです．
+
+###   void setBitmapOrder(int order);
+GU3000GPIO::setBitmapOrder() と同じものです．
+
+**************************
 ###   void setDisplayStartAddress(word displayStartAddress);
 VFDモジュール内蔵コマンドに対応
 ###   void writeBitImage(word address,  word imagesize, byte *bitmap);

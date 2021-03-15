@@ -23,9 +23,9 @@ class GU3000Graphic : public FrameBuffer, private GU3000GPIO {
   int ysize;
   //
   void init(){
-    init(VFD_Xdots, VFD_Ydots, VFD_DispMemSize);
+    init(VFD_Xdots, VFD_Ydots, VFD_DispMemSize, VFD_DAD_BROADCAST);
   };
-  void init(int x, int y, int memsize);
+  void init(int x, int y, int memsize, word DAD);
   void setDAD(word displayAddress); // displayAddress(for multiple VFD);
   void setBitmapOrder(int order);
   //
@@ -63,7 +63,7 @@ private:
   void flushCommandData();
   void writeCommand(byte command);
   // DAD(Display Address for using multiple VFD modules)
-  word m_dad = VFD_DAD_BROADCAST;
+  word m_dad;
 };
 
 typedef GU3000Graphic VFD;
