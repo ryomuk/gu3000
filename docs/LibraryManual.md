@@ -1,4 +1,4 @@
-書きかけドラフト(2021/3/15版)
+書きかけドラフト(2021/3/16版)
 
 
 # GU3000Graphicクラス(グラフィックDMAモード用ライブラリ)リファレンスマニュアル
@@ -10,6 +10,8 @@ VFDクラスはGU3000Graphicクラスと同一のもの(typedefで定義)です�
 class GU3000Graphic : public FrameBuffer, private GU3000GPIO
 typedef GU3000Graphic VFD;
 ```
+
+グラフィックDMAモードの詳細についてはVFDモジュールの仕様書「基本機能ソフトウェア仕様書 5章 グラフィックDMAモード」を参照して下さい．
 
 # ライブラリビルド方法
 ```
@@ -442,6 +444,7 @@ VFDモジュールのx方向(横)のドット数です．
 VFDモジュールのy方向(縦)のドット数です．
 
 ## Public関数
+
 ###  void init()
 デフォルト値で初期化します．
 ```
@@ -461,37 +464,96 @@ VFDモジュールのアドレス(マニュアルでDADと呼ばれているも�
 ###   void setBitmapOrder(int order);
 GU3000GPIO::setBitmapOrder() と同じものです．
 
-**************************
-###   void setDisplayStartAddress(word displayStartAddress);
-VFDモジュール内蔵コマンドに対応
-###   void writeBitImage(word address,  word imagesize, byte *bitmap);
-VFDモジュール内蔵コマンドに対応
-###   void writeAreaBitImage(word address, word xbyte, word ybyte, byte *bitmap);
-VFDモジュール内蔵コマンドに対応
-###   void setBrightness(byte brightness);
-VFDモジュール内蔵コマンドに対応
-###   void syncNextCommand();
-VFDモジュール内蔵コマンドに対応
+###   void writeBitImage(word address,  word imagesize, byte *bitmap)
+指定されたVFD表示メモリのアドレスにビットイメージデータを書き込みます．
+VFDモジュールのコマンド(ビットイメージ書き込み, 5.4.1.1節)に対応します．
 
-###  void updateDisplayStartAddress();    // address = DisplayStartAddress
-###  void rotateAndSetDisplayStartAddress(); 
-###  void rotateButNotSetDisplayStartAddress();
-###  void clear();
-###    void clearFrameBuffer();
-###    void show();
-###    void rotateAndShow();
-###    void syncAndShow();
-###    void syncRotateAndShow();
-###    void showAllArea();
+###   void writeAreaBitImage(word address, word xbyte, word ybyte, byte *bitmap)
+指定されたエリアにビットイメージを書き込みます．
+VFDモジュールのコマンド(エリアビットイメージ書き込み, 5.4.1.2節)に対応します．
+
+###   void setDisplayStartAddress(word displayStartAddress)
+表示スタートアドレスを指定します．
+VFDモジュールのコマンド(表示スタートアドレス指定, 5.4.1.3節)に対応します．
+
+###   void syncNextCommand()
+このコマンドの後に書き込まれたコマンドは，内部表示リフレッシュに同期して動作します．
+VFDモジュールのコマンド(リフレッシュ同期表示指定, 5.4.1.4節)に対応します．
+
+###   void setBrightness(byte brightness)
+輝度を設定します．
+VFDモジュールのコマンド(表示輝度指定5.4.1.5節)に対応します．
+
+### setDrawingAddress(word address)
+show()メソッドで転送する先のVFDの表示メモリのアドレス
+(描画用アドレス)を設定します．
+
+### rotateDrawingAddress()
+転送先アドレスが複数面ある場合にローテートします．
+非表示エリアに描画するような場合に使用します．
+
+### setDisplayStartAddressToDrawingAddress()
+描画用アドレスの値を，VFDの表示アドレスに設定します．
+非表示面に描画した後に表示開始するような場合に使用します．
+
+###  void clear()
+フレームバッファのクリア，VFD表示メモリのクリアを行います．
+VFDの表示開始アドレスと描画用アドレスを0に設定します．
+
+###  void clearFrameBuffer()
+フレームバッファ(buf[])をクリアし，カーソル位置を(0,0)にします．
+FrameBuffer::clear()と等価です．
+
+###  void show()
+buf[]の内容をVFDに転送します．
+転送先の先頭アドレスは描画用アドレス(m_drawing_addr)です．
+VFDに送られた内容はm_buf[]にもコピーされます．
+
+graphicDMAモードにおいてもVFDへの転送はそれなりに時間がかかるので，
+差分が含まれるエリア(差分が開始したところから終了したところまで)を転送します．
+
+###  void rotateAndShow()
+描画用アドレスをローテートした後に描画します．
+
+###  void syncAndShow()
+VFDの内部表示リフレッシュに同期してshow()のバッファ転送を行います．
+
+###  void syncRotateAndShow()
+描画用アドレスをローテートした後に描画し，
+VFDの内部表示リフレッシュに同期して表示アドレスを更新します．
+
+###  void showAllArea()
+buf[]全体を(差分転送ではなく)VFDの表示メモリに転送します．
+
 ## private変数
-###  byte *m_buf = NULL;
-###  bool m_first_show;
-###  word m_disp_memsize;
-###  word m_disp_areasize;
-###  word m_disp_startaddr;
-###  word m_dad = VFD_DAD_BROADCAST;
-## private関数
-###  void flushCommandData();
-###  void writeCommand(byte command);
-###  // DAD(Display Address for using multiple VFD modules)
+###  byte *m_buf
+VFDの表示メモリに転送した内容を保持するためのバッファです．
+差分転送用に使用します．
 
+###  bool m_first_show
+1回目のshow()処理であることを示すフラグです．
+- true:  buf[]全体をVFDに転送します．
+- false: 差分転送を行います．
+
+###  word m_disp_memsize
+VFDモジュールの総バッファサイズ(byte数)(表示エリア+非表示エリア)です．
+
+###  word m_disp_areasize
+VFDモジュールの表示エリアのサイズ(byte数)です．
+
+###  word m_drawing_addr
+show()が転送する先の表示メモリのアドレスです．
+
+###  word m_dad
+VFDモジュールのアドレス(マニュアルでDADと呼ばれているもの)です．
+
+## private関数
+###  void flushCommandData()
+コマンドの強制中断等によって，
+writeBitImage()等の処理が途中で中断されている可能性があるため，
+VFD初期化時に，
+VFDに対して表示メモリサイズ分のダミーデータを送ります．
+
+###  void writeCommand(byte command)
+VFDモジュールのコマンドを起動します．
+「基本機能ソフトウェア仕様書 5.4節」参照．

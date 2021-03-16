@@ -20,8 +20,8 @@ void GU3000Graphic::init(int x, int y, int memsize, word DAD){
 
   flushCommandData(); // Flush last incompleted command (ex. copy large bitmap)
   setDisplayStartAddress(0);
+  setDrawingAddress(0);
   setBrightness(VFD_BRIGHTNESS_MID);
-
 }
 
 void GU3000Graphic::setDAD(word DAD){
@@ -31,12 +31,6 @@ void GU3000Graphic::setDAD(word DAD){
 void GU3000Graphic::setBitmapOrder(int order)
 {
   GU3000GPIO::setBitmapOrder(order);
-}
-
-void GU3000Graphic::setDisplayStartAddress(word startAddress){
-  writeCommand(0x53);
-  writeWord(startAddress);
-  m_disp_startaddr = startAddress;
 }
 
 void GU3000Graphic::writeBitImage(word startAddress, word size, byte *imagedata){
@@ -64,9 +58,9 @@ void GU3000Graphic::writeAreaBitImage(word startAddress,
   }
 }
 
-void GU3000Graphic::setBrightness(byte brightness){
-  writeCommand(0x58);
-  writeByte(brightness);
+void GU3000Graphic::setDisplayStartAddress(word startAddress){
+  writeCommand(0x53);
+  writeWord(startAddress);
 }
 
 void GU3000Graphic::syncNextCommand(){
@@ -74,17 +68,21 @@ void GU3000Graphic::syncNextCommand(){
   writeByte(0x01);
 }
 
-void GU3000Graphic::updateDisplayStartAddress(){
-  setDisplayStartAddress(m_disp_startaddr);
+void GU3000Graphic::setBrightness(byte brightness){
+  writeCommand(0x58);
+  writeByte(brightness);
 }
 
-void GU3000Graphic::rotateAndSetDisplayStartAddress(){
-  rotateButNotSetDisplayStartAddress();
-  updateDisplayStartAddress();
+void GU3000Graphic::setDrawingAddress(word address){
+  m_drawing_addr = address;
 }
 
-void GU3000Graphic::rotateButNotSetDisplayStartAddress(){
-  m_disp_startaddr = (m_disp_startaddr + m_disp_areasize) % m_disp_memsize;
+void GU3000Graphic::rotateDrawingAddress(){
+  m_drawing_addr = (m_drawing_addr + m_disp_areasize) % m_disp_memsize;
+}
+
+void GU3000Graphic::setDisplayStartAddressToDrawingAddress(){
+  setDisplayStartAddress(m_drawing_addr);
 }
 
 void GU3000Graphic::clear(){
@@ -97,6 +95,7 @@ void GU3000Graphic::clear(){
     showAllArea();
   }
   setDisplayStartAddress(0);
+  setDrawingAddress(0);
 }
 
 void GU3000Graphic::clearFrameBuffer(){
@@ -116,27 +115,27 @@ void GU3000Graphic::show(){
     diff_size = m_disp_areasize;
   } else {
     for(i = 0; i < m_disp_areasize; i++){
-      if(m_disp_startaddr+i >= m_disp_memsize) break;
-      if(m_buf[m_disp_startaddr+i] != buf[i]) break;
+      if(m_drawing_addr+i >= m_disp_memsize) break;
+      if(m_buf[m_drawing_addr+i] != buf[i]) break;
     }
     if(i == m_disp_areasize) return;  // m_buf == buf
     
     diff_start = i;
     
-    for(i = min(m_disp_startaddr + m_disp_areasize, m_disp_memsize) -1;
+    for(i = min(m_drawing_addr + m_disp_areasize, m_disp_memsize) -1;
 	i > diff_start; i--){
-      if(m_buf[m_disp_startaddr+i] != buf[i]) break;
+      if(m_buf[m_drawing_addr+i] != buf[i]) break;
     }
     diff_size = i - diff_start + 1;
   }
   
-  writeBitImage(m_disp_startaddr + diff_start, diff_size, &(buf[diff_start]));
+  writeBitImage(m_drawing_addr + diff_start, diff_size, &(buf[diff_start]));
 }
 
 void GU3000Graphic::rotateAndShow(){
-  rotateButNotSetDisplayStartAddress();
+  rotateDrawingAddress();
   show();
-  updateDisplayStartAddress();
+  setDisplayStartAddressToDrawingAddress();
 }
 
 void GU3000Graphic::syncAndShow(){
@@ -145,10 +144,10 @@ void GU3000Graphic::syncAndShow(){
 }
 
 void GU3000Graphic::syncRotateAndShow(){
-  rotateButNotSetDisplayStartAddress();
+  rotateDrawingAddress();
   show();
   syncNextCommand();
-  updateDisplayStartAddress();
+  setDisplayStartAddressToDrawingAddress();
 }
 
 void GU3000Graphic::showAllArea(){
