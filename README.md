@@ -1,5 +1,5 @@
 # gu3000
-日本語の説明書は下記にあります．
+日本語での説明は下記を参照して下さい．
 - [docs/README_JP.md](docs/README_JP.md)
 - [docs/LibraryManual.md](docs/LibraryManual.md)
 
