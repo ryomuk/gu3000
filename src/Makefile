@@ -18,12 +18,6 @@ $(TARGET): $(OBJ)
 clean:
 	rm -rf $(TARGET) $(OBJ) $(DEPENDFILE)
 
-cleanbackup:
-	rm -rf *~
-
-cleanall:
-	rm -rf $(TARGET) $(OBJ) $(DEPENDFILE) *~
-
 depend:
 	for i in *.cpp; do $(CC) -MM $$i; done > $(DEPENDFILE)
 

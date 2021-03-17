@@ -100,7 +100,7 @@ git clone https://github.com/ryomuk/gu3000.git
 cd gu3000/src
 make
 cd examples
-./make.sh (もしくは，サブディレクトリでmake)
+make (もしくは，サブディレクトリでmake)
 ```
 ライブラリの使用方法は，[LibraryManual.md](./LibraryManual.md)およびサンプルプログラムのソースをご覧下さい．
 

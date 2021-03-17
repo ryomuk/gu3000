@@ -30,7 +30,7 @@ git clone https://github.com/ryomuk/gu3000.git
 cd gu3000/src
 make
 cd examples
-./make.sh (or cd to subdirectory and make)
+make (or cd to subdirectory and make)
 ```
 
 ## Examples
