@@ -1,4 +1,8 @@
 # gu3000
+日本語の説明書は下記にあります．
+- [docs/README_JP.md](docs/README_JP.md)
+- [docs/LibraryManual.md](docs/LibraryManual.md)
+
 ![](images/showbmp.jpg)
 
 Library for Noritake Itron GU3000 series (GU3100 and GU3900) VFD module parallel interface graphic DMA mode for Raspberry Pi

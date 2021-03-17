@@ -29,8 +29,10 @@ void GU3000GPIO::init(int rdy, int wr,
 
   // Initialize WiringPi
   wiringPiSetupGpio();
-
+    
   pinMode(m_rdy, INPUT);
+  //  pullUpDnControl(m_rdy, PUD_UP);
+  // RasPi4 pull-up is available only for limited pins
 
   pinMode(m_d0, OUTPUT);
   pinMode(m_d1, OUTPUT);
