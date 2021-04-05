@@ -97,7 +97,7 @@ void usage(){
     }
 #endif    
     if(showinfo){
-      sprintf(linebuf, "%dusec(fps=%.1f)\n%d",
+      sprintf(linebuf, "%dusec(fps=%.0f)\n%d",
 	      (int)(time_elapsed),
 	      time_elapsed ? (double)(1000000.0/time_elapsed): 0,
 	      n++
