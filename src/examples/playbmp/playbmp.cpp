@@ -8,7 +8,8 @@
 // so settting GU3000PIO::writeByteImage() to MSB first mode
 // is a little bit faster
 
-#define DEFAULT_FPS 29.97
+//#define DEFAULT_FPS 29.97
+#define DEFAULT_FPS 30.0
 
 #define MSBFIRST
 //#define LSBFIRST
@@ -96,7 +97,7 @@ void usage(){
     }
 #endif    
     if(showinfo){
-      sprintf(linebuf, "%dusec(%.2fFPS)\n%d",
+      sprintf(linebuf, "%dusec(fps=%.1f)\n%d",
 	      (int)(time_elapsed),
 	      time_elapsed ? (double)(1000000.0/time_elapsed): 0,
 	      n++
@@ -107,8 +108,8 @@ void usage(){
     vfd.show();
 
     time_elapsed = micros() - time_s;
-    if( looptime > time_elapsed + 100){
-      usleeptime = looptime - time_elapsed - 100;
+    if( looptime > time_elapsed + 85){
+      usleeptime = looptime - time_elapsed - 85;
       usleep(usleeptime);
     }
     time_elapsed = micros() - time_s;
