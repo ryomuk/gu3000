@@ -25,7 +25,7 @@ font.o: font.cpp font.h fonts/16segments_font.h fonts/4x6_font.h \
  fonts/H68TR_font.h fonts/MICRlike6x6_font.h fonts/MICRlike7x8_font.h \
  fonts/Noritake6x8_font.h fonts/TK80BS_font.h fonts/TK80BS_JIS_font.h \
  fonts/TK80BS_ASCII_font.h fonts/TK80BS_KANA_font.h \
- fonts/TK80BS_GREEK_font.h
+ fonts/TK80BS_GREEK_font.h fonts/hpdl1414_font.h
 
 framebuffer.o: framebuffer.cpp framebuffer.h font.h
 

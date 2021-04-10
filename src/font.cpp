@@ -5,6 +5,7 @@
 #include "font.h"
 
 #include "fonts/16segments_font.h"
+#include "fonts/hpdl1414_font.h"
 #include "fonts/4x6_font.h"
 #include "fonts/H68TR_font.h"
 #include "fonts/MICRlike6x6_font.h"
@@ -25,6 +26,7 @@ Font *g_FontList[] = {
 		      &font_MICRlike7x8,
 		      &font_MICRlike6x6,
 		      &font_16segments,
+		      &font_hpdl1414,
 		      &font_TK80BS,
 		      &font_TK80BS_KANA,
 		      &font_TK80BS_GREEK,
