@@ -24,6 +24,9 @@ RDY WR_ D0...D7
 VFD module
 ```
 
+## WringPi version
+You need wringPi 2.52 or later for Raspberry Pi 4B.
+
 ## How to build
 ```
 git clone https://github.com/ryomuk/gu3000.git
