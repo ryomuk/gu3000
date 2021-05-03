@@ -106,7 +106,7 @@ wget https://project-downloads.drogon.net/wiringpi-latest.deb
 sudo dpkg -i wiringpi-latest.deb
 ```
 でアップデートして下さい．
-2.50ではroot権限でwiringPiが実行できない不具合が判明しています．
+2.50ではroot権限でプログラムを起動したときにVFDへの表示が出来ないという問題が判明しています．
 
 ### ライブラリのbuild
 ```
