@@ -281,6 +281,18 @@ sudo systemctl stop showfb.service
 リブートすると，VFDにコンソール画面が表示されます．
 ![](../images/console.jpg)
 
+### root権限でshowfbが動かない問題(2021/5/3, 調査中)
+root権限でshowfb他，サンプルプログラムが動かない場合がある問題が見つかっています．
+暫定対処として，
+/usr/local/bin/showfb.shの最後の一行
+```
+exec /usr/local/bin/showfb
+```
+を下記のように修正して下さい．
+```
+exec sudo -u pi /usr/local/bin/showfb
+```
+
 ## コンソール用のフォントについて
 /usr/share/consolefonts にあるフォントはどれも大きいので，
 小さめのフォントデータを作りました．
@@ -317,7 +329,7 @@ cp dot.xsession ~/.xsession
 cp dot.twmrc ~/.twmrc
 ```
 
-rebootしてコンソール画面でログインしてxサーバを起動．
+rebootしてコンソール画面でログインしてxサーバを起動．(本体に接続したUSBキーボードとマウスを使用)
 ```
 startx
 ```
