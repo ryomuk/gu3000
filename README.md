@@ -27,6 +27,8 @@ VFD module
 ## WringPi version
 You need wringPi 2.52 or later for Raspberry Pi 4B.
 
+http://wiringpi.com/wiringpi-updated-to-2-52-for-the-raspberry-pi-4b/
+
 ## How to build
 ```
 git clone https://github.com/ryomuk/gu3000.git
