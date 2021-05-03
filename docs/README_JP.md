@@ -237,8 +237,17 @@ HDMIからの画面出力はできなくなりますので，
 両立させたい場合は適宜設定して下さい．
 
 ## console
+### Raspberry Piのブート画面をCUIのテキスト表示にするための設定
+```
+sudo raspi-config
+```
+下記、2項目を設定。
+- System Options→Boot Auto Login→Console に設定
+- System Options→Splash Sreen→"Would you like to show the splash screen at boot?" → "<いいえ>" に設定。 (Splash screen at boot is disabledになる)
+
 ### フレームバッファ/dev/fb0をVFDに表示するための設定
-1. /dev/fb0 を作成 (HDMI出力は外す)
+1. /dev/fb0 の設定 (HDMI出力は外す)
+
 /boot/config.txtに以下を追加
 ```
 framebuffer_height=128	
@@ -261,12 +270,12 @@ sudo cp -a consolefonts-extra /usr/share/
 sudo cp showfb /usr/local/bin/
 sudo cp showfb.sh /usr/local/bin/
 sudo cp showfb.service /etc/systemd/system/
-sudo systemctrl enable showfb.service
+sudo systemctl enable showfb.service
 ```
 
 無効化したい場合は，下記のコマンドを実行．
 ```
-sudo systemctrl stop showfb.service
+sudo systemctl stop showfb.service
 ```
 
 リブートすると，VFDにコンソール画面が表示されます．
@@ -289,17 +298,21 @@ git clone https://github.com/talamus/rw-psf.git
 
 ## Xwindow
 ### Xorg用設定
-gu3000/src/examples/showfb/xorg.confを/etc/X11/xorg.confにコピー．
 ラズパイ標準のX環境は小画面ではほとんど使えないので，
 小画面用のwindow manager(twm)を使う．
-.xsessionをユーザのホームディレクトリに置く．
 X用のフォントもインストールする．
+xtermやx11のアプリ(xeyes等)もインストールする．
+gu3000/src/examples/showfb/xorg.confを/etc/X11/xorg.confにコピー．
+.xsessionをユーザのホームディレクトリに置く．
 
 ```
-cd gu3000/src/examples/showfb
-sudo cp xorg.conf /etc/X11/
 sudo apt install twm
 sudo apt install xfonts-base
+sudo apt install xterm
+sudo apt install x11-apps
+
+cd gu3000/src/examples/showfb
+sudo cp xorg.conf /etc/X11/
 cp dot.xsession ~/.xsession
 cp dot.twmrc ~/.twmrc
 ```
