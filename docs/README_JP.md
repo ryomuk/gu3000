@@ -279,7 +279,8 @@ sudo systemctl stop showfb.service
 ```
 
 リブートすると，VFDにコンソール画面が表示されます．
-なお、色がditherで2値表示されるので、色付きの文字はつぶれたように表示されます。
+なお、色がditherで2値表示されるので、
+色付きの文字はつぶれたように表示されます。(下記のOKの部分等)
 
 ![](../images/console.jpg)
 
