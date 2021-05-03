@@ -96,10 +96,10 @@ sudo apt install wiringpi
 ```
 #### 2021/5/3 追記
 raspbianに標準でインストールされているwringPiのバージョンは2.50で，
-これはリリースされている最新版なのですが，開発者のページ(
+これはリリースされている最新版のようなのですが，開発者のページ(
 http://wiringpi.com/wiringpi-updated-to-2-52-for-the-raspberry-pi-4b/
 )
-によると，Pi 4B用には2.52が最新のようです．
+によると，Pi 4B用には2.52にアップデートする必要があるようです．
 ```
 cd /tmp
 wget https://project-downloads.drogon.net/wiringpi-latest.deb
