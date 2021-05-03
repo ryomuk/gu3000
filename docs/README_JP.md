@@ -1,5 +1,5 @@
 # Noritake Itron GU3000シリーズ VFDモジュール用Raspberry Piパラレルインターフェース説明書
-## Rev. 2021/5/3
+## Rev. 2021/5/3b
 この文書は，Noritake Itron GU3000シリーズ VFDモジュール用に作成したインターフェースについて説明するものです．
 インターフェースボードやプログラムは，
 ノリタケ伊勢電子株式会社(以下，Noritake Itron)とは一切関係のない個人が開発したものです．
@@ -94,6 +94,20 @@ GPIO制御にwiringPi( http://wiringpi.com/ )を使用しています．
 ```
 sudo apt install wiringpi
 ```
+#### 2021/5/3 追記
+raspbianに標準でインストールされているwringPiのバージョンは2.50で，
+これはリリースされている最新版なのですが，開発者のページ(
+http://wiringpi.com/wiringpi-updated-to-2-52-for-the-raspberry-pi-4b/
+)
+によると，Pi 4B用には2.52が最新のようです．
+```
+cd /tmp
+wget https://project-downloads.drogon.net/wiringpi-latest.deb
+sudo dpkg -i wiringpi-latest.deb
+```
+でアップデートして下さい．
+2.50ではroot権限でwiringPiが実行できない不具合が判明しています．
+
 ### ライブラリのbuild
 ```
 git clone https://github.com/ryomuk/gu3000.git
@@ -284,9 +298,9 @@ sudo systemctl stop showfb.service
 
 ![](../images/console.jpg)
 
-### root権限でshowfbが動かない問題(2021/5/3, 調査中)
-root権限でshowfb他，サンプルプログラムが動かない場合がある問題が見つかっています．
-暫定対処として，
+### root権限でshowfbが動かない問題(追記 2021/5/3)
+Raspberry Pi 4B と wiringPi 2.50で，root権限でshowfb他，サンプルプログラムが動かないという問題が見つかりました．
+wiringPiを2.52にアップデートするか，もしくは暫定対処として，
 /usr/local/bin/showfb.shの最後の一行
 ```
 exec /usr/local/bin/showfb
@@ -295,6 +309,10 @@ exec /usr/local/bin/showfb
 ```
 exec sudo -u pi /usr/local/bin/showfb
 ```
+
+wiringPiのアップデート方法は開発者のページ(
+http://wiringpi.com/wiringpi-updated-to-2-52-for-the-raspberry-pi-4b/
+)を参照して下さい．
 
 ## コンソール用のフォントについて
 /usr/share/consolefonts にあるフォントはどれも大きいので，
