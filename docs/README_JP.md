@@ -26,7 +26,7 @@ Raspberry Pi ImagerでRaspbian(32bit版)をSDメモリに書き込んだもの�
   - OS: Raspbian (Linux raspberrypi 5.4.72-v7l+ #1356)
 
 #### 2021/5/3 追記
-下記での動作を確認しました．
+下記での動作も確認しました．
 - Raspbery Pi Zero W
   - OS: Raspbian Pi OS(Legacy) (Linux raspberrypi 5.10.103+ #1529)
 
