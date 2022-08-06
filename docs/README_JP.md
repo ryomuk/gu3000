@@ -1,8 +1,15 @@
 # Noritake Itron GU3000シリーズ VFDモジュール用Raspberry Piパラレルインターフェース説明書
-## Rev. 2021/5/3b
+## Rev. 20220806
 この文書は，Noritake Itron GU3000シリーズ VFDモジュール用に作成したインターフェースについて説明するものです．
 インターフェースボードやプログラムは，
 ノリタケ伊勢電子株式会社(以下，Noritake Itron)とは一切関係のない個人が開発したものです．
+
+# 改版履歴
+### Rev. 20220806
+- kernel5.10でのshowfbがおかしくなる件の解決方法を追加
+
+### Rev. 2021/5/3b
+- Pi4B用のwiringpiに関する記述を追加
 
 # 開発環境および実行環境
 ## ハードウェア
@@ -17,6 +24,11 @@ Raspberry Pi ImagerでRaspbian(32bit版)をSDメモリに書き込んだもの�
   - OS: Raspbian (Linux raspberrypi 5.4.79+ #1373)
 - Raspberry Pi 4
   - OS: Raspbian (Linux raspberrypi 5.4.72-v7l+ #1356)
+
+#### 2021/5/3 追記
+下記での動作を確認しました．
+- Raspbery Pi Zero W
+  - OS: Raspbian Pi OS(Legacy) (Linux raspberrypi 5.10.103+ #1529)
 
 # 使用方法
 ## VFDモジュールDIPスイッチの設定 ★★★重要★★★
@@ -270,10 +282,12 @@ hdmi_cvt=256 128 60 3 0 0 0
 hdmi_group=2
 hdmi_mode=87
 hdmi_force_hotplug=1
+framebuffer_depth=16
 ```
+(20220806追記: 上記で，'framebuffer_depth=16'はLinux5.10用に追加した．5.4では不要だった．)
 
-2. コンソール用フォントconsolefonts-extra/*.psf を/usr/share/にコピー．
-3. dev/fb0 をVFDに逐次表示するコマンド examples/showfb, examples/showfb.sh
+2. コンソール用フォントconsolefonts-extra/*.psf を/usr/share/にフォルダごとコピー．
+3. /dev/fb0 をVFDに逐次表示するコマンド examples/showfb, examples/showfb.sh
 を/usr/local/binにコピー．
 4. それらコマンドをサービスとして起動するための設定．サービスを有効化．
 
